@@ -6,6 +6,7 @@ import colors from 'colors';
 import connectDb from './config/db.js';
 
 import usersRoutes from './api/routes/users.js';
+import authRoutes from './api/routes/auth.js';
 
 // Route Controllers
 
@@ -25,6 +26,7 @@ app.use(express.json({ extended: false }));
 // Routes
 
 app.use('/api/users', usersRoutes);
+app.use('/api/auth', authRoutes);
 
 const PORT = process.env.PORT || 8080;
 
