@@ -1,15 +1,14 @@
 import Recipe from '../../models/Recipe.js';
 import User from '../../models/User.js';
-import { validationResult } from 'express-validator';
+import checkValidationResult from '../../utilities/checkValidationResults.js';
 import createJwt from '../../utilities/createJWT.js';
 
 export const getUserInfo = async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-
   try {
+    // Run validation check. If errors exist, send 400 status and errors list
+    const [hasError, errors] = checkValidationResult(req, res);
+    if (hasError) res.status(400).json({ errors: errors.array() });
+
     const user = await User.findById({ _id: req.user.id }).select('-password');
 
     if (!user) {
@@ -26,12 +25,11 @@ export const getUserInfo = async (req, res) => {
 };
 
 export const createUser = async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-
   try {
+    // Run validation check. If errors exist, send 400 status and errors list
+    const [hasError, errors] = checkValidationResult(req, res);
+    if (hasError) res.status(400).json({ errors: errors.array() });
+
     const { name, email, password } = req.body;
     let user = await User.findOne({ email: email });
 
@@ -72,7 +70,7 @@ export const updateUser = async (req, res) => {
     let user = await User.findById(req.user.id);
 
     if (!user) {
-      return status(400).json({ success: false, msg: 'User not found' });
+      return res.status(400).json({ success: false, msg: 'User not found' });
     }
 
     const { email, name, oldPassword, newPassword } = req.body;
@@ -80,10 +78,11 @@ export const updateUser = async (req, res) => {
     // Check if name or email changed and update if so
     if (name !== user.name) user.name = name;
     if (email !== user.email) user.email = email;
-    if (newPassword) user.password = newPassword;
 
     // Check if old password matches password in db
     if (await user.matchPasswords(oldPassword)) {
+      if (newPassword) user.password = newPassword;
+
       await user.save();
       return res.status(200).json({ success: true, user });
     } else {

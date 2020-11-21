@@ -26,9 +26,8 @@ const UserSchema = new Schema({
   },
 });
 
-UserSchema.methods.matchPasswords = async function (password) {
-  const passwordMatch = await bcrypt.compare(password, this.password);
-  return passwordMatch;
+UserSchema.methods.matchPasswords = async function (oldPassword) {
+  return await bcrypt.compare(oldPassword, this.password);
 };
 
 UserSchema.pre('save', async function (next) {

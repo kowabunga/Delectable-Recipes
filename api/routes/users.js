@@ -31,7 +31,7 @@ router.post(
   createUser
 );
 
-// @route   PUT /api/users/:id
+// @route   PUT /api/users/
 // @desc    Update user information by id
 // @access  Private
 router.put('/', auth, updateUser);
