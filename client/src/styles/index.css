@@ -1,0 +1,22 @@
+.landing-card {
+  background-color: #fff !important;
+  background-image: url('../images/ashim-d-silva-iIgr4k00IK4-unsplash.jpg');
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative !important;
+}
+
+.landing-card * {
+  z-index: 1 !important;
+}
+
+.landing-card::after {
+  content: '';
+  background-color: rgba(44, 44, 44, 0.7);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}

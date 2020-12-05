@@ -6,9 +6,9 @@ import Nav from 'react-bootstrap/Nav';
 const Header = () => {
   //@todo User Link below
   return (
-    <Navbar bg='light' expand='md'>
+    <Navbar bg='primary' variant='dark' expand='md'>
       <LinkContainer to='/'>
-        <Navbar.Brand>BRAND</Navbar.Brand>
+        <Navbar.Brand>Delectable Recipes Brand</Navbar.Brand>
       </LinkContainer>
       <Navbar.Toggle aria-controls='main-navbar' />
       <Navbar.Collapse id='main-navbar'>
