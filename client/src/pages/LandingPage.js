@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import FormLabel from 'react-bootstrap/FormLabel';
@@ -6,12 +6,23 @@ import FormControl from 'react-bootstrap/FormControl';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+import RecipeContext from '../context/recipes/recipeContext';
+import RecipeGroup from '../components/RecipeGroup';
 
 const LandingPage = () => {
+  const recipeContext = useContext(RecipeContext);
+  const { recipes, getAllRecipes } = recipeContext;
+
   const [recipeQuery, setRecipeQuery] = useState('');
+
+  useEffect(() => {
+    getAllRecipes();
+  }, [getAllRecipes]);
+
   const searchRecipes = e => {
     e.preventDefault();
   };
+
   return (
     <div className='justify-content-center align-items-center'>
       <Row>
@@ -27,7 +38,7 @@ const LandingPage = () => {
         </Col>
       </Row>
 
-      <Row className='pt-5 text-center justify-content-center align-items-center'>
+      <Row className='pt-4 text-center justify-content-center align-items-center'>
         <p className='px-2'>
           Looking for recipes? Search to see if we have your favorite recipes or
           scroll down to see some of our favorites!
@@ -57,6 +68,10 @@ const LandingPage = () => {
             </Form.Row>
           </Form>
         </Col>
+      </Row>
+
+      <Row className='mt-4 align-items-center justify-content-center'>
+        <RecipeGroup recipes={recipes}></RecipeGroup>
       </Row>
     </div>
   );

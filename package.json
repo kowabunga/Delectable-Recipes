@@ -21,7 +21,7 @@
     "start": "node server.js",
     "frontend": "npm start --prefix client",
     "backend": "nodemon server.js",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\""
   },
   "author": "anthony siletti",
   "license": "ISC",
