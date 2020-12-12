@@ -1,15 +1,18 @@
 import React from 'react';
-import Header from './components/Header';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+import Container from 'react-bootstrap/Container';
+import Header from './components/Header';
 import LandingPage from './pages/LandingPage';
 
 const App = () => {
   return (
     <Router>
       <Header />
-      <main className='py-2'>
-        <Route exact path='/' component={LandingPage} />
-      </main>
+      <Container>
+        <main className='py-2'>
+          <Route exact path='/' component={LandingPage} />
+        </main>
+      </Container>
       <footer className='text-center lead'>
         Copyright &copy;{new Date().getFullYear()} Delectable Recipes
       </footer>
