@@ -4,6 +4,7 @@ import RecipeState from './context/recipes/RecipeState';
 import Container from 'react-bootstrap/Container';
 import Header from './components/Header';
 import LandingPage from './pages/LandingPage';
+import RecipeDetailsPage from './pages/RecipeDetailsPage';
 
 const App = () => {
   return (
@@ -13,6 +14,7 @@ const App = () => {
         <Container>
           <main className='py-2'>
             <Route exact path='/' component={LandingPage} />
+            <Route path='/recipes/:id' component={RecipeDetailsPage} />
           </main>
         </Container>
         <footer className='text-center lead pt-5 pb-2'>

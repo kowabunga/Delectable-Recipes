@@ -11,13 +11,15 @@ import RecipeGroup from '../components/RecipeGroup';
 
 const LandingPage = () => {
   const recipeContext = useContext(RecipeContext);
-  const { recipes, getAllRecipes } = recipeContext;
+  const { recipes, getAllRecipes, loading } = recipeContext;
 
   const [recipeQuery, setRecipeQuery] = useState('');
 
   useEffect(() => {
+    console.log(loading);
     getAllRecipes();
-  }, [getAllRecipes]);
+    console.log(loading);
+  }, []);
 
   const searchRecipes = e => {
     e.preventDefault();
