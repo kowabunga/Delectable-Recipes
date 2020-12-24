@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
 import CardImg from 'react-bootstrap/esm/CardImg';
@@ -24,3 +25,7 @@ const RecipeCard = ({ recipe }) => {
 };
 
 export default RecipeCard;
+
+RecipeCard.propTypes = {
+  recipe: PropTypes.object.isRequired,
+};
