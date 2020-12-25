@@ -5,6 +5,11 @@ const RecipeSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
     ref: 'users',
+    default: null,
+  },
+  userName: {
+    type: String,
+    default: null,
   },
   recipeTitle: {
     type: String,
@@ -18,9 +23,18 @@ const RecipeSchema = new Schema({
     type: String,
     required: true,
   },
-  ingredients: {
-    type: String,
-  },
+  ingredients: [
+    {
+      amount: {
+        type: String,
+        required: true,
+      },
+      ingredient: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
   recipeSteps: [
     {
       title: {

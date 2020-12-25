@@ -5,13 +5,13 @@ import Card from 'react-bootstrap/Card';
 import CardImg from 'react-bootstrap/esm/CardImg';
 
 const RecipeCard = ({ recipe }) => {
-  const { user, recipeTitle, recipeDescription, recipeImage, _id } = recipe;
+  const { userName, recipeTitle, recipeDescription, recipeImage, _id } = recipe;
   return (
     <Card className='m-2 recipe-card'>
       <CardImg variant='top' src={recipeImage} />
       <Card.Body>
         <Card.Title>{recipeTitle}</Card.Title>
-        <Card.Subtitle className='mb-2 text-muted'>By {user}</Card.Subtitle>
+        <Card.Subtitle className='mb-2 text-muted'>By {userName}</Card.Subtitle>
         <Card.Text className='two-lines-only'>{recipeDescription}</Card.Text>
         <Link
           to={`/recipes/${_id}`}

@@ -6,27 +6,63 @@ import ListGroupItem from 'react-bootstrap/ListGroupItem';
 import Image from 'react-bootstrap/Image';
 import RecipeContext from '../context/recipes/recipeContext';
 
-const RecipeDetailsPage = () => {
+const RecipeDetailsPage = ({ match }) => {
   const recipeContext = useContext(RecipeContext);
   const {
-    recipe: { user, recipeTitle, recipeDescription, recipeImage },
+    recipe,
+    recipe: {
+      userName,
+      recipeTitle,
+      recipeDescription,
+      recipeImage,
+      ingredients,
+      recipeSteps,
+    },
     getSingleRecipe,
   } = recipeContext;
-
+  console.log(recipe);
   useEffect(() => {
-    getSingleRecipe();
-  }, []);
+    getSingleRecipe(match.params.id);
+  }, [match]);
   return (
     <>
-      <h1></h1>
-      <Row>
-        <Col md={8}>
-          <h1>Ingredients</h1>
-        </Col>
-        <Col md={4}>
-          <Image src={recipeImage} />
-        </Col>
-      </Row>
+      {Object.keys(recipe).length > 0 && (
+        <>
+          <h1>{recipeTitle}</h1>
+          <p className='h5 mt-3'>By {userName}</p>
+          <Row className='align-items-center recipebg pt-3 pb-4 mt-4'>
+            <Col lg={6} md={5}>
+              <Image src={recipeImage} fluid />
+            </Col>
+
+            <Col lg={4} md={7}>
+              <h2>Ingredients</h2>
+              <ListGroup>
+                {ingredients &&
+                  ingredients.map(ingredient => (
+                    <ListGroupItem key={ingredient._id}>
+                      {ingredient.amount} {ingredient.ingredient}
+                    </ListGroupItem>
+                  ))}
+              </ListGroup>
+            </Col>
+            <Col lg={2}></Col>
+                {/* @TODO WORK HERE */}
+            <Row>
+              <Col lg={6} md={8} sm={10}>
+                <ListGroup>
+                  {recipeSteps &&
+                    recipeSteps.map((step, idx) => (
+                      <ListGroupItem key={step._id}>
+                        {idx}. {step}
+                      </ListGroupItem>
+                    ))}
+                </ListGroup>
+              </Col>
+            </Row>
+          </Row>
+        </>
+      )}
     </>
   );
 };

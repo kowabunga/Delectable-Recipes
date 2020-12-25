@@ -47,6 +47,11 @@ body {
   -webkit-box-orient: vertical;
 }
 
+.recipebg {
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgb(189, 189, 189);
+}
+
 @media (min-width: 990px) {
   .landing-card {
     padding-top: 15vh !important;

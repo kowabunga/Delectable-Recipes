@@ -19,6 +19,7 @@ const RecipeState = props => {
 
   const { recipes, recipe, loading } = state;
 
+  // Get all recipes for display
   const getAllRecipes = async () => {
     try {
       dispatch({ type: GET_RECIPES_REQUEST });
@@ -29,14 +30,15 @@ const RecipeState = props => {
     }
   };
 
-  const getSingleRecipe = id => {
+  // Get individual recipe matching passed in recipe id from url params
+  const getSingleRecipe = async id => {
     try {
       dispatch({ type: GET_RECIPES_REQUEST });
-      console.log(recipes.filter(r => r._id === id));
-      // dispatch({
-      //   type: GET_SINGLE_RECIPE_REQUEST,
-      //   payload: recipes.filter(r => r._id === id)[0],
-      // });
+      const { data } = await axios.get(`/api/recipes/${id}`);
+      dispatch({
+        type: GET_SINGLE_RECIPE_REQUEST,
+        payload: data,
+      });
     } catch (error) {
       console.error(error);
     }
