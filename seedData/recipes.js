@@ -24,14 +24,6 @@ export const recipesData = [
     ],
     recipeSteps: [
       {
-        title: 'Gather the ingredients',
-        directions:
-          'Gather the following ingredients to make your Perfect Pizza',
-        media: '',
-        mediaType: '',
-        optional: '',
-      },
-      {
         title: 'Roll out the pizza dough',
         directions:
           "First, you'll want to roll out your pizza dough. There are two general shapes you can make pizza into - square or round. You want to spread the dough to be about the size of the pan you're going to cook it in. The dough should be fairly thin, but not too thin that it rips. If you want to make a deep dish pizza, you should use at least 2 lb. of dough for it. If you aren't sure how to roll out pizza dough, follow the video instructions below.",
@@ -92,10 +84,6 @@ export const recipesData = [
     recipeImage:
       'https://images.unsplash.com/photo-1588464083058-989751d1a05f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80',
     recipeSteps: [
-      {
-        title: 'Ingredients',
-        directions: 'Gather the ingredients',
-      },
       {
         title: 'Make the Waffles',
         directions:

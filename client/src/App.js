@@ -5,6 +5,7 @@ import Container from 'react-bootstrap/Container';
 import Header from './components/Header';
 import LandingPage from './pages/LandingPage';
 import RecipeDetailsPage from './pages/RecipeDetailsPage';
+import Recipes from './pages/Recipes';
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
           <main className='py-2'>
             <Route exact path='/' component={LandingPage} />
             <Route path='/recipes/:id' component={RecipeDetailsPage} />
+            <Route path='/recipes' component={Recipes} />
           </main>
         </Container>
         <footer className='text-center lead pt-5 pb-2'>

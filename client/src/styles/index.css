@@ -49,12 +49,51 @@ body {
 
 .recipebg {
   border-radius: 5px;
-  box-shadow: 0 0 5px rgb(189, 189, 189);
+  box-shadow: 0 0 3px rgb(189, 189, 189);
+}
+
+.light-shadow {
+  box-shadow: 0 0 2px rgb(189, 189, 189);
+}
+
+/* Video iframe size media queries */
+
+@media (min-width: 1011px) {
+  .iframe-wrapper {
+    height: 405px;
+  }
+}
+@media (max-width: 1010px) {
+  .iframe-wrapper {
+    height: 405px;
+  }
 }
 
 @media (min-width: 990px) {
   .landing-card {
     padding-top: 15vh !important;
     padding-bottom: 15vh !important;
+  }
+}
+
+@media (max-width: 800px) {
+  .iframe-wrapper {
+    height: 270px;
+  }
+
+  .sm-bot {
+    margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 590px) {
+  .iframe-wrapper {
+    height: 225.1px;
+  }
+}
+
+@media (max-width: 500px) {
+  .iframe-wrapper {
+    height: 200px;
   }
 }
