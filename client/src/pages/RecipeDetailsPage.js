@@ -11,13 +11,7 @@ const RecipeDetailsPage = ({ match }) => {
   const recipeContext = useContext(RecipeContext);
   const {
     recipe,
-    recipe: {
-      userName,
-      recipeTitle,
-      recipeImage,
-      ingredients,
-      recipeSteps,
-    },
+    recipe: { userName, recipeTitle, recipeImage, ingredients, recipeSteps },
     getSingleRecipe,
   } = recipeContext;
 
@@ -34,7 +28,7 @@ const RecipeDetailsPage = ({ match }) => {
   return (
     <>
       <Link to='/recipes'>
-        <i className='fas fa-arrow-circle-left' my></i> Back to Recipes
+        <i className='fas fa-arrow-circle-left'></i> Back to Recipes
       </Link>
       <br />
       <br />
@@ -44,7 +38,7 @@ const RecipeDetailsPage = ({ match }) => {
           <p className='h5 mt-3 text-muted'>By {userName}</p>
           <Row className='align-items-center  pt-3 pb-4 mt-4'>
             <Col lg={6} md={5}>
-              <Image src={recipeImage} fluid className='sm-bot'/>
+              <Image src={recipeImage} fluid className='sm-bot' />
             </Col>
 
             <Col lg={4} md={7} className='mb-4'>
@@ -66,7 +60,7 @@ const RecipeDetailsPage = ({ match }) => {
                     recipeSteps.map((step, idx) => (
                       <ListGroupItem
                         key={step._id}
-                        className='py- my-2 mx-2 light-shadow'
+                        className='my-2 mx-2 light-shadow'
                       >
                         <p className='lead text-primary'>
                           {idx + 1}. {step.title}
@@ -82,9 +76,8 @@ const RecipeDetailsPage = ({ match }) => {
                             <div className='iframe-wrapper'>
                               <iframe
                                 src={editMediaLink(step.media)}
-                                frameborder='0'
                                 allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture'
-                                allowfullscreen
+                                allowFullScreen={true}
                                 width='100%'
                                 height='100%'
                                 title={`Video for recipe step entitled ${step.title}`}

@@ -15,8 +15,8 @@ const App = () => {
         <Container>
           <main className='py-2'>
             <Route exact path='/' component={LandingPage} />
+            <Route exact path='/recipes' component={Recipes} />
             <Route path='/recipes/:id' component={RecipeDetailsPage} />
-            <Route path='/recipes' component={Recipes} />
           </main>
         </Container>
         <footer className='text-center lead pt-5 pb-2'>
