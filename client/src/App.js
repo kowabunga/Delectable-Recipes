@@ -1,29 +1,15 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import DelectableRecipes from './DelectableRecipes';
 import RecipeState from './context/recipes/RecipeState';
-import Container from 'react-bootstrap/Container';
-import Header from './components/Header';
-import LandingPage from './pages/LandingPage';
-import RecipeDetailsPage from './pages/RecipeDetailsPage';
-import Recipes from './pages/Recipes';
+import UserState from './context/user/UserState';
 
 const App = () => {
   return (
-    <RecipeState>
-      <Router>
-        <Header />
-        <Container>
-          <main className='py-2'>
-            <Route exact path='/' component={LandingPage} />
-            <Route exact path='/recipes' component={Recipes} />
-            <Route path='/recipes/:id' component={RecipeDetailsPage} />
-          </main>
-        </Container>
-        <footer className='text-center lead pt-5 pb-2'>
-          Copyright &copy;{new Date().getFullYear()} Delectable Recipes
-        </footer>
-      </Router>
-    </RecipeState>
+    <UserState>
+      <RecipeState>
+        <DelectableRecipes />
+      </RecipeState>
+    </UserState>
   );
 };
 

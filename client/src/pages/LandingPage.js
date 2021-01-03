@@ -6,19 +6,22 @@ import FormControl from 'react-bootstrap/FormControl';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import RecipeContext from '../context/recipes/recipeContext';
 import RecipeGroup from '../components/RecipeGroup';
+import RecipeContext from '../context/recipes/recipeContext';
+import UserContext from '../context/user/userContext';
 
 const LandingPage = () => {
   const recipeContext = useContext(RecipeContext);
   const { recipes, getAllRecipes, loading } = recipeContext;
 
+  const userContext = useContext(UserContext);
+  const { setUserLoggedIn, loggedIn } = userContext;
+
   const [recipeQuery, setRecipeQuery] = useState('');
 
   useEffect(() => {
-    console.log(loading);
     getAllRecipes();
-    console.log(loading);
+    setUserLoggedIn();
   }, []);
 
   const searchRecipes = e => {
