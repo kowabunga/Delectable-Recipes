@@ -28,10 +28,9 @@ const Login = ({ history }) => {
 
   return (
     <>
-      {Object.keys(loginError).length > 0 && (
-        <Alert variant='danger' className='text-center'>
-          OH NO
-        </Alert>
+      {loginError.error !== undefined && (
+        // <></>
+        <Alert variant='danger'>{loginError.error}. Please try again.</Alert>
       )}
       <Row className='justify-content-center'>
         <Col lg={3} md={2}></Col>

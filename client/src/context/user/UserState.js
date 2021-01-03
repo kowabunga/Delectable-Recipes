@@ -31,7 +31,6 @@ const UserState = props => {
   const logInUser = async (email, password) => {
     try {
       dispatch({ type: USER_LOGIN_REQUEST });
-      console.log({ email, password });
 
       const { data } = await axios.post(
         '/api/auth',
@@ -65,6 +64,30 @@ const UserState = props => {
     }
   };
 
+  const getUserInformation = async () => {
+    try {
+      console.log('Ran');
+
+      dispatch({ type: GET_USER_DATA_REQUEST });
+
+      if (!jwt && localStorage.getItem('delec_recipe_jwt') !== null) {
+        let jwt = localStorage.getItem('delec_recipe_jwt');
+
+        const { data } = await axios.get('/api/users', {
+          headers: {
+            'x-auth-token': jwt,
+          },
+        });
+
+        dispatch({ type: GET_USER_DATA_SUCCESS, payload: data });
+      } else {
+        dispatch({ type: GET_USER_DATA_FAIL, payload: 'User not logged in' });
+      }
+    } catch (error) {
+      dispatch({ type: GET_USER_DATA_FAIL, payload: error });
+    }
+  };
+
   // Checks for existance of jwt. If so, gets appropriate information to ensure user's previous logged in state remains after reload
   const setUserLoggedIn = () => {
     if (localStorage.getItem('delec_recipe_jwt') !== null)
@@ -84,6 +107,7 @@ const UserState = props => {
         logInUser,
         logoutUser,
         setUserLoggedIn,
+        getUserInformation,
       }}
     >
       {props.children}

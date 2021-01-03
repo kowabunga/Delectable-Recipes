@@ -13,23 +13,34 @@ export default (state, action) => {
   const { type, payload } = action;
 
   switch (type) {
+    case GET_USER_DATA_REQUEST:
     case USER_LOGIN_REQUEST:
       return {
         ...state,
         loading: true,
       };
+
     case USER_LOGIN_SUCCESS:
       return {
         ...state,
         loading: false,
         loggedIn: true,
+        loginError: {},
+        jwt: payload,
+      };
+
+    case GET_USER_DATA_SUCCESS:
+      return {
+        ...state,
         user: payload,
       };
+
     case SET_USER_LOGGED_IN_ON_RELOAD:
       return {
         ...state,
         loggedIn: true,
       };
+
     case USER_LOGOUT_SUCCESS:
       return {
         ...state,
@@ -39,11 +50,14 @@ export default (state, action) => {
         loading: false,
         jwt: null,
       };
+
+    case GET_USER_DATA_FAIL:
     case USER_LOGIN_FAIL:
       return {
         ...state,
-        loginError: payload.response,
+        loginError: payload.response.data,
       };
+
     default:
       break;
   }
