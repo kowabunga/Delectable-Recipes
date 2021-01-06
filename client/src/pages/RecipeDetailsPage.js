@@ -60,7 +60,7 @@ const RecipeDetailsPage = ({ match }) => {
                     recipeSteps.map((step, idx) => (
                       <ListGroupItem
                         key={step._id}
-                        className='my-2 mx-2 light-shadow'
+                        className='mx-2 light-shadow'
                       >
                         <p className='lead text-primary'>
                           {idx + 1}. {step.title}
