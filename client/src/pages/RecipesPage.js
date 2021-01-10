@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
+import Spinner from 'react-bootstrap/Spinner';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -7,25 +8,30 @@ import FormControl from 'react-bootstrap/FormControl';
 import Button from 'react-bootstrap/Button';
 import RecipeGroup from '../components/RecipeGroup';
 import RecipeContext from '../context/recipes/recipeContext';
+import UserContext from '../context/user/userContext';
 
-const Recipes = () => {
+const RecipesPage = ({ history }) => {
   const [recipeQuery, setRecipeQuery] = useState('');
 
   const recipeContext = useContext(RecipeContext);
   const { recipes, getAllRecipes, loading } = recipeContext;
 
+  const userContext = useContext(UserContext);
+  const { loggedIn } = userContext;
+
   useEffect(() => {
     getAllRecipes();
   }, []);
+
+  const gotoAddRecipe = e => {
+    e.preventDefault();
+    history.push('/recipes/create');
+  };
 
   const searchRecipes = () => {};
 
   return (
     <>
-      <Row className='pt-4 text-center justify-content-center align-items-center'>
-        <p className='display-4'></p>
-      </Row>
-
       <Row className='justify-content-center'>
         <Col lg={10} md={8} sm={12}>
           <Form onSubmit={searchRecipes}>
@@ -36,7 +42,7 @@ const Recipes = () => {
                 </FormLabel>
                 <FormControl
                   type='text'
-                  placeholder='Enter recipe...'
+                  placeholder='Search for recipe...'
                   id='recipeSearchBox'
                   onChange={e => setRecipeQuery(e.target.value)}
                 ></FormControl>
@@ -48,14 +54,29 @@ const Recipes = () => {
               </Col>
             </Form.Row>
           </Form>
+          {loggedIn && (
+            <Button
+              onClick={e => gotoAddRecipe(e)}
+              className='mt-2'
+              variant='info'
+            >
+              Create Recipe
+            </Button>
+          )}
         </Col>
       </Row>
 
       <Row className='mt-4 align-items-center justify-content-center'>
-        <RecipeGroup recipes={recipes}></RecipeGroup>
+        {loading ? (
+          <Spinner animation='border'>
+            <span className='sr-only'>Loading...</span>
+          </Spinner>
+        ) : (
+          <RecipeGroup recipes={recipes}></RecipeGroup>
+        )}
       </Row>
     </>
   );
 };
 
-export default Recipes;
+export default RecipesPage;

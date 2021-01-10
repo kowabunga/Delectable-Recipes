@@ -1,5 +1,5 @@
 body {
-  background-color: #fbfcf7;
+  background-color: #f3f3f3;
 }
 
 .landing-card {
@@ -54,6 +54,14 @@ body {
 
 .light-shadow {
   box-shadow: 0 0 2px rgb(189, 189, 189);
+}
+
+.userbgc {
+  background-color: #ffffff;
+}
+
+.br {
+  border-right: 1px solid rgb(184, 184, 184);
 }
 
 /* Video iframe size media queries */

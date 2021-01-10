@@ -14,7 +14,7 @@ const RecipeCard = ({ recipe }) => {
         <Card.Subtitle className='mb-2 text-muted'>By {userName}</Card.Subtitle>
         <Card.Text className='two-lines-only'>{recipeDescription}</Card.Text>
         <Link
-          to={`/recipes/${_id}`}
+          to={`/recipes/${_id}/view`}
           className='link-underline recipe-card-link-position'
         >
           View Recipe <i className='fas fa-arrow-circle-right'></i>

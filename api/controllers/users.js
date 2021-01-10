@@ -9,7 +9,9 @@ export const getUserInfo = async (req, res) => {
     const [hasError, errors] = checkValidationResult(req, res);
     if (hasError) res.status(400).json({ errors: errors.array() });
 
-    const user = await User.findById({ _id: req.user.id }).select('-password');
+    const user = await User.findById({ _id: req.user.id }).select(
+      '-password -passwordResetTokenExpiry -_id'
+    );
 
     if (!user) {
       return res
