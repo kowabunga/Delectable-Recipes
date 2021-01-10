@@ -1,13 +1,15 @@
 import React, { useContext, useEffect } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import UserContext from './context/user/userContext';
+import PrivateRoute from './components/PrivateRoute';
 import Container from 'react-bootstrap/Container';
 import Header from './components/Header';
 import LandingPage from './pages/LandingPage';
 import RecipeDetailsPage from './pages/RecipeDetailsPage';
-import Recipes from './pages/Recipes';
-import Login from './pages/Login';
-import MyAccount from './pages/MyAccount';
+import RecipesPage from './pages/RecipesPage';
+import Login from './pages/LoginPage';
+import MyAccount from './pages/MyAccountPage';
+import RecipeCreatePage from './pages/RecipeCreatePage';
 
 const MainApp = () => {
   const userContext = useContext(UserContext);
@@ -24,10 +26,11 @@ const MainApp = () => {
       <Container>
         <main className='py-2'>
           <Route exact path='/' component={LandingPage} />
-          <Route exact path='/recipes' component={Recipes} />
-          <Route path='/recipes/:id' component={RecipeDetailsPage} />
+          <Route exact path='/recipes' component={RecipesPage} />
+          <Route path='/recipes/:id/view' component={RecipeDetailsPage} />
+          <PrivateRoute path='/recipes/create' component={RecipeCreatePage} />
           <Route path='/login' component={Login} />
-          <Route path='/account' component={MyAccount} />
+          <PrivateRoute path='/account' component={MyAccount} />
         </main>
       </Container>
       <footer className='text-center lead pt-5 pb-2'>

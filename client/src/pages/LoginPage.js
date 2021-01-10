@@ -9,7 +9,7 @@ import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import UserContext from '../context/user/userContext';
 
-const Login = ({ history }) => {
+const LoginPage = ({ history }) => {
   const userContext = useContext(UserContext);
   const { logInUser, loggedIn, loginError } = userContext;
 
@@ -67,4 +67,4 @@ const Login = ({ history }) => {
   );
 };
 
-export default Login;
+export default LoginPage;

@@ -5,7 +5,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import UserContext from '../context/user/userContext';
 
-const MyAccount = () => {
+const MyAccountPage = () => {
   const userContext = useContext(UserContext);
   const {
     getUserInformation,
@@ -42,4 +42,4 @@ const MyAccount = () => {
   );
 };
 
-export default MyAccount;
+export default MyAccountPage;
