@@ -26,19 +26,21 @@ export default (state, action) => {
         loading: false,
         loggedIn: true,
         loginError: {},
-        jwt: payload,
+        jwt: payload.token,
       };
 
     case GET_USER_DATA_SUCCESS:
       return {
         ...state,
         user: payload,
+        loading: false,
       };
 
     case SET_USER_LOGGED_IN_ON_RELOAD:
       return {
         ...state,
         loggedIn: true,
+        jwt: localStorage.getItem('delec_recipe_jwt'),
       };
 
     case USER_LOGOUT_SUCCESS:
@@ -55,7 +57,7 @@ export default (state, action) => {
     case USER_LOGIN_FAIL:
       return {
         ...state,
-        loginError: payload.response.data,
+        loginError: payload,
       };
 
     default:

@@ -45,12 +45,11 @@ const UserState = props => {
         }
       );
 
-      dispatch({ type: USER_LOGIN_SUCCESS });
-
       // set jwt in local storage
-      if (localStorage.getItem('delec_recipe_jwt') === null) {
-        localStorage.setItem('delec_recipe_jwt', data.token);
-      }
+      localStorage.setItem('delec_recipe_jwt', data.token);
+      console.log('token set');
+
+      dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
     } catch (error) {
       dispatch({ type: USER_LOGIN_FAIL, payload: error });
     }
@@ -66,23 +65,15 @@ const UserState = props => {
 
   const getUserInformation = async () => {
     try {
-      console.log('Ran');
-
       dispatch({ type: GET_USER_DATA_REQUEST });
 
-      if (!jwt && localStorage.getItem('delec_recipe_jwt') !== null) {
-        let jwt = localStorage.getItem('delec_recipe_jwt');
+      const { data } = await axios.get('/api/users', {
+        headers: {
+          'x-auth-token': jwt,
+        },
+      });
 
-        const { data } = await axios.get('/api/users', {
-          headers: {
-            'x-auth-token': jwt,
-          },
-        });
-
-        dispatch({ type: GET_USER_DATA_SUCCESS, payload: data });
-      } else {
-        dispatch({ type: GET_USER_DATA_FAIL, payload: 'User not logged in' });
-      }
+      dispatch({ type: GET_USER_DATA_SUCCESS, payload: data });
     } catch (error) {
       dispatch({ type: GET_USER_DATA_FAIL, payload: error });
     }

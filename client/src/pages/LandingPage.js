@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import Spinner from 'react-bootstrap/Spinner';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import FormLabel from 'react-bootstrap/FormLabel';
@@ -76,7 +77,13 @@ const LandingPage = () => {
       </Row>
 
       <Row className='mt-4 align-items-center justify-content-center'>
-        <RecipeGroup recipes={recipes}></RecipeGroup>
+        {loading ? (
+          <Spinner animation='border'>
+            <span className='sr-only'>Loading...</span>
+          </Spinner>
+        ) : (
+          <RecipeGroup recipes={recipes}></RecipeGroup>
+        )}
       </Row>
     </div>
   );

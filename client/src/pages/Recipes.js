@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
+import Spinner from 'react-bootstrap/Spinner';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -52,7 +53,13 @@ const Recipes = () => {
       </Row>
 
       <Row className='mt-4 align-items-center justify-content-center'>
-        <RecipeGroup recipes={recipes}></RecipeGroup>
+        {loading ? (
+          <Spinner animation='border'>
+            <span className='sr-only'>Loading...</span>
+          </Spinner>
+        ) : (
+          <RecipeGroup recipes={recipes}></RecipeGroup>
+        )}
       </Row>
     </>
   );

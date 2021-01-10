@@ -6,7 +6,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import Button from 'react-bootstrap/Button';
 import UserContext from '../context/user/userContext';
 
-const Header = () => {
+const Header = ({ history }) => {
   const userContext = useContext(UserContext);
   const { loggedIn, logoutUser } = userContext;
 
@@ -14,6 +14,7 @@ const Header = () => {
     e.preventDefault();
     console.log('Logout');
     logoutUser();
+    history.push('/');
   };
 
   return (
