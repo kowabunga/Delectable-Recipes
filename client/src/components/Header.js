@@ -39,11 +39,14 @@ const Header = ({ history }) => {
             ) : (
               <>
                 <NavDropdown title='Your Account' id='account-nav-dropdown'>
-                  <LinkContainer to='/account'>
+                  <LinkContainer exact to='/account'>
                     <NavDropdown.Item>Account Details</NavDropdown.Item>
                   </LinkContainer>
                   <LinkContainer to='/account/recipes'>
                     <NavDropdown.Item>Your Recipes</NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer to='/account/edit'>
+                    <NavDropdown.Item>Edit Information</NavDropdown.Item>
                   </LinkContainer>
                 </NavDropdown>
                 <Button type='button' onClick={e => logout(e)}>
