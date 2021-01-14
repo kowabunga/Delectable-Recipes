@@ -11,6 +11,9 @@ import {
   GET_USER_DATA_REQUEST,
   GET_USER_DATA_SUCCESS,
   SET_USER_LOGGED_IN_ON_RELOAD,
+  GET_USER_RECIPES_REQUEST,
+  GET_USER_RECIPES_SUCCESS,
+  GET_USER_RECIPES_FAIL,
 } from '../../types';
 
 import axios from 'axios';
@@ -22,11 +25,12 @@ const UserState = props => {
     loggedIn: false,
     loading: false,
     jwt: null,
+    userRecipes: [],
   };
 
   const [state, dispatch] = useReducer(UserReducer, initialState);
 
-  const { user, loggedIn, loading, loginError, jwt } = state;
+  const { user, loggedIn, loading, loginError, jwt, userRecipes } = state;
 
   const logInUser = async (email, password) => {
     try {
@@ -87,6 +91,17 @@ const UserState = props => {
       });
   };
 
+  const getUserRecipes = async () => {
+    try {
+      dispatch({ type: GET_USER_DATA_REQUEST });
+      const { data } = await axios.get('api/users/recipes');
+
+      dispatch({ type: GET_USER_DATA_SUCCESS, payload: data });
+    } catch (error) {
+      dispatch({ type: GET_USER_DATA_FAIL, payload: error });
+    }
+  };
+
   return (
     <UserContext.Provider
       value={{
@@ -95,6 +110,8 @@ const UserState = props => {
         loading,
         loginError,
         jwt,
+        userRecipes,
+        getUserRecipes,
         logInUser,
         logoutUser,
         setUserLoggedIn,

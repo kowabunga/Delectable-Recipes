@@ -32,8 +32,33 @@ const RecipesPage = ({ history }) => {
 
   return (
     <>
+      {loggedIn && (
+        <Row>
+          <Col sm={12} className='justify-content-center mb-5'>
+            <p className='h3 text-center'>
+              Have something you want to share? A recipe to warm the heart?
+            </p>
+            <Button
+              onClick={e => gotoAddRecipe(e)}
+              className='mt-2'
+              variant='info'
+              size='sm'
+              block
+            >
+              Create Your Recipe
+            </Button>
+          </Col>
+        </Row>
+      )}
       <Row className='justify-content-center'>
         <Col lg={10} md={8} sm={12}>
+          {loggedIn ? (
+            <p className='h3 text-center'>
+              Or, are you looking for something specific?
+            </p>
+          ) : (
+            <p className='h3 text-center'>Looking for something specific?</p>
+          )}
           <Form onSubmit={searchRecipes}>
             <Form.Row className='align-items-center'>
               <Col lg={9} sm={8} xs={9}>
@@ -58,15 +83,6 @@ const RecipesPage = ({ history }) => {
               </Col>
             </Form.Row>
           </Form>
-          {loggedIn && (
-            <Button
-              onClick={e => gotoAddRecipe(e)}
-              className='mt-2'
-              variant='info'
-            >
-              Create Recipe
-            </Button>
-          )}
         </Col>
       </Row>
 

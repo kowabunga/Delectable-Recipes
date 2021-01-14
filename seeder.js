@@ -16,11 +16,9 @@ const seedData = async () => {
 
     const recipes = recipesData.map(recipe => ({
       ...recipe,
-      userId: user._id,
+      user: user._id,
       userName: user.name,
     }));
-
-    console.log(recipes);
 
     await Recipes.insertMany(recipes);
 
