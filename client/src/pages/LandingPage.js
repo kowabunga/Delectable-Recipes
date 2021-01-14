@@ -33,14 +33,14 @@ const LandingPage = () => {
     <div className='justify-content-center align-items-center'>
       <Row>
         <Col>
-          <Card className='landing-card text-white text-center p-5'>
-            <h1 className='display-4'>Wholesum Recipes For All</h1>
+          <div className='landing-card text-white text-center p-5'>
+            <h1 className='display-4 text-light'>Wholesum Recipes For All</h1>
             <p className='lead pt-4'>
               Home is where the heart is, but the center of that heart is the
               kitchen and the wonderful food that is prepared and served to
               families of all shapes and sizes.
             </p>
-          </Card>
+          </div>
         </Col>
       </Row>
 
@@ -67,7 +67,11 @@ const LandingPage = () => {
                 ></FormControl>
               </Col>
               <Col lg={3} sm={4} xs={3}>
-                <Button variant='primary' type='submit' className='btn-block'>
+                <Button
+                  variant='outline-info'
+                  type='submit'
+                  className='btn-block'
+                >
                   Search
                 </Button>
               </Col>

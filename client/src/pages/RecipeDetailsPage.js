@@ -27,7 +27,7 @@ const RecipeDetailsPage = ({ match }) => {
   }, [match]);
   return (
     <>
-      <Link to='/recipes'>
+      <Link to='/recipes' className='text-info'>
         <i className='fas fa-arrow-circle-left'></i> Back to Recipes
       </Link>
       <br />

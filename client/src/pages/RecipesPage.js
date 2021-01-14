@@ -48,7 +48,11 @@ const RecipesPage = ({ history }) => {
                 ></FormControl>
               </Col>
               <Col lg={3} sm={4} xs={3}>
-                <Button variant='primary' type='submit' className='btn-block'>
+                <Button
+                  variant='outline-info'
+                  type='submit'
+                  className='btn-block'
+                >
                   Search
                 </Button>
               </Col>

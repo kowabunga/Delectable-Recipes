@@ -56,7 +56,11 @@ const LoginPage = ({ history }) => {
               />
             </FormGroup>
 
-            <Button variant='secondary' type='button' onClick={e => login(e)}>
+            <Button
+              variant='outline-primary'
+              type='button'
+              onClick={e => login(e)}
+            >
               Login
             </Button>
           </Form>
