@@ -11,6 +11,9 @@ import {
   GET_USER_DATA_REQUEST,
   GET_USER_DATA_SUCCESS,
   SET_USER_LOGGED_IN_ON_RELOAD,
+  GET_USER_RECIPES_REQUEST,
+  GET_USER_RECIPES_SUCCESS,
+  GET_USER_RECIPES_FAIL,
 } from '../../types';
 
 import axios from 'axios';
@@ -98,6 +101,17 @@ const UserState = props => {
       dispatch({
         type: SET_USER_LOGGED_IN_ON_RELOAD,
       });
+  };
+
+  const getUserRecipes = async () => {
+    try {
+      dispatch({ type: GET_USER_DATA_REQUEST });
+      const { data } = await axios.get('api/users/recipes');
+
+      dispatch({ type: GET_USER_DATA_SUCCESS, payload: data });
+    } catch (error) {
+      dispatch({ type: GET_USER_DATA_FAIL, payload: error });
+    }
   };
 
   return (
