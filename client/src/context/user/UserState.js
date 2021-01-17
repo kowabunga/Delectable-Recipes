@@ -18,15 +18,16 @@ import axios from 'axios';
 const UserState = props => {
   const initialState = {
     user: {},
-    loginError: {},
+    loginError: null,
     loggedIn: false,
     loading: false,
     jwt: null,
+    userError: null,
   };
 
   const [state, dispatch] = useReducer(UserReducer, initialState);
 
-  const { user, loggedIn, loading, loginError, jwt } = state;
+  const { user, loggedIn, loading, loginError, jwt, userError } = state;
 
   const logInUser = async (email, password) => {
     try {
@@ -51,7 +52,13 @@ const UserState = props => {
 
       dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
     } catch (error) {
-      dispatch({ type: USER_LOGIN_FAIL, payload: error });
+      dispatch({
+        type: USER_LOGIN_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
     }
   };
 
@@ -75,7 +82,13 @@ const UserState = props => {
 
       dispatch({ type: GET_USER_DATA_SUCCESS, payload: data });
     } catch (error) {
-      dispatch({ type: GET_USER_DATA_FAIL, payload: error });
+      dispatch({
+        type: GET_USER_DATA_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
     }
   };
 
@@ -95,6 +108,7 @@ const UserState = props => {
         loading,
         loginError,
         jwt,
+        userError,
         logInUser,
         logoutUser,
         setUserLoggedIn,

@@ -12,11 +12,18 @@ const MyAccountPage = () => {
     user: { name, email },
     loading,
     jwt,
+    userError,
+    logoutUser,
   } = userContext;
 
   useEffect(() => {
     jwt !== null && getUserInformation();
   }, [jwt]);
+
+  // If usererror - i.e. can't get user info such as if user has been deleted, logout and return to login
+  useEffect(() => {
+    userError && logoutUser();
+  }, [userError]);
 
   return (
     <Row className='justify-content-center'>

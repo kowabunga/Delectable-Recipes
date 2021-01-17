@@ -11,7 +11,7 @@ import UserContext from '../context/user/userContext';
 
 const LoginPage = ({ history }) => {
   const userContext = useContext(UserContext);
-  const { logInUser, loggedIn, loginError } = userContext;
+  const { logInUser, loggedIn, loginError, userError } = userContext;
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -28,10 +28,16 @@ const LoginPage = ({ history }) => {
 
   return (
     <>
-      {loginError.error !== undefined && (
-        // <></>
+      {userError && (
+        <Alert variant='danger'>
+          Something went wrong. Please login again.
+        </Alert>
+      )}
+
+      {loginError && (
         <Alert variant='danger'>{loginError.error}. Please try again.</Alert>
       )}
+
       <Row className='justify-content-center'>
         <Col lg={3} md={2}></Col>
         <Col lg={6} md={8}>

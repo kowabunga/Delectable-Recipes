@@ -18,6 +18,8 @@ export default (state, action) => {
       return {
         ...state,
         loading: true,
+        userError: null,
+        loginError: null,
       };
 
     case USER_LOGIN_SUCCESS:
@@ -25,8 +27,9 @@ export default (state, action) => {
         ...state,
         loading: false,
         loggedIn: true,
-        loginError: {},
+        loginError: null,
         jwt: payload.token,
+        userError: null,
       };
 
     case GET_USER_DATA_SUCCESS:
@@ -47,13 +50,18 @@ export default (state, action) => {
       return {
         ...state,
         user: {},
-        loginError: {},
+        loginError: null,
         loggedIn: false,
         loading: false,
         jwt: null,
       };
 
     case GET_USER_DATA_FAIL:
+      return {
+        ...state,
+        userError: payload,
+      };
+
     case USER_LOGIN_FAIL:
       return {
         ...state,
