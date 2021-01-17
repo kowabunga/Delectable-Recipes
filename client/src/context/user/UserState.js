@@ -105,12 +105,12 @@ const UserState = props => {
 
   const getUserRecipes = async () => {
     try {
-      dispatch({ type: GET_USER_DATA_REQUEST });
+      dispatch({ type: GET_USER_RECIPES_REQUEST });
       const { data } = await axios.get('api/users/recipes');
 
-      dispatch({ type: GET_USER_DATA_SUCCESS, payload: data });
+      dispatch({ type: GET_USER_RECIPES_SUCCESS, payload: data });
     } catch (error) {
-      dispatch({ type: GET_USER_DATA_FAIL, payload: error });
+      dispatch({ type: GET_USER_RECIPES_FAIL, payload: error });
     }
   };
 
@@ -127,6 +127,7 @@ const UserState = props => {
         logoutUser,
         setUserLoggedIn,
         getUserInformation,
+        getUserRecipes,
       }}
     >
       {props.children}

@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -7,42 +7,31 @@ import FormLabel from 'react-bootstrap/FormLabel';
 import FormControl from 'react-bootstrap/FormControl';
 import FormGroup from 'react-bootstrap/FormGroup';
 import Button from 'react-bootstrap/Button';
-import Alert from 'react-bootstrap/Alert';
-import UserContext from '../context/user/userContext';
 
-const LoginPage = ({ history }) => {
-  const userContext = useContext(UserContext);
-  const { logInUser, loggedIn, loginError, userError } = userContext;
-
+const RegisterPage = () => {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
-  const login = e => {
-    e.preventDefault();
-
-    logInUser(email, password);
-  };
-
-  useEffect(() => {
-    loggedIn && history.push('/account');
-  }, [loggedIn]);
+  const register = e => {};
 
   return (
     <>
-      {userError && (
-        <Alert variant='danger'>
-          Something went wrong. Please login again.
-        </Alert>
-      )}
-
-      {loginError && (
-        <Alert variant='danger'>{loginError.error}. Please try again.</Alert>
-      )}
-
       <Row className='justify-content-center'>
         <Col lg={3} md={2}></Col>
         <Col lg={6} md={8}>
           <Form className='mt-3'>
+            <FormGroup controlId='name'>
+              <FormLabel>Name</FormLabel>
+              <FormControl
+                type='text'
+                placeholder='Enter name...'
+                variant={name}
+                onChange={e => setName(e.target.value)}
+              />
+            </FormGroup>
+
             <FormGroup controlId='email'>
               <FormLabel>Email</FormLabel>
               <FormControl
@@ -63,12 +52,22 @@ const LoginPage = ({ history }) => {
               />
             </FormGroup>
 
+            <FormGroup controlId='confirmpassword'>
+              <FormLabel>Confirm Password</FormLabel>
+              <FormControl
+                type='password'
+                placeholder='Enter password...'
+                variant={confirmPassword}
+                onChange={e => setConfirmPassword(e.target.value)}
+              />
+            </FormGroup>
+
             <Button
               variant='outline-primary'
               type='button'
-              onClick={e => login(e)}
+              onClick={e => register(e)}
             >
-              Login
+              Register
             </Button>
           </Form>
         </Col>
@@ -78,9 +77,9 @@ const LoginPage = ({ history }) => {
         <Col lg={3} md={2}></Col>
         <Col lg={6} md={8}>
           <p className='mt-3'>
-            Don't have an account?{' '}
-            <Link to='/register' className='text-info'>
-              Register
+            Already have an account?{' '}
+            <Link to='/login' className='text-info'>
+              Login
             </Link>
           </p>
         </Col>
@@ -90,4 +89,4 @@ const LoginPage = ({ history }) => {
   );
 };
 
-export default LoginPage;
+export default RegisterPage;

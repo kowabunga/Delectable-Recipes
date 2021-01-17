@@ -8,6 +8,7 @@ import LandingPage from './pages/LandingPage';
 import RecipeDetailsPage from './pages/RecipeDetailsPage';
 import RecipesPage from './pages/RecipesPage';
 import Login from './pages/LoginPage';
+import Register from './pages/RegisterPage';
 import MyAccount from './pages/MyAccountPage';
 import RecipeCreatePage from './pages/RecipeCreatePage';
 import MyAccountEditPage from './pages/MyAccountEditPage';
@@ -31,6 +32,7 @@ const MainApp = () => {
           <Switch>
             <Route exact path='/' component={LandingPage} />
             <Route path='/login' component={Login} />
+            <Route path='/register' component={Register} />
             <Route exact path='/recipes' component={RecipesPage} />
             <PrivateRoute path='/recipes/create' component={RecipeCreatePage} />
             <Route path='/recipes/:id' component={RecipeDetailsPage} />
