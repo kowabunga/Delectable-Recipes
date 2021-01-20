@@ -22,10 +22,10 @@ export default (state, action) => {
       return {
         ...state,
         loading: true,
-        userError: null,
-        loginError: null,
-        registerError:null,
-        user:{},
+        userError: [],
+        loginError: [],
+        registerError: [],
+        user: {},
       };
 
     case USER_LOGIN_SUCCESS:
@@ -33,19 +33,19 @@ export default (state, action) => {
         ...state,
         loading: false,
         loggedIn: true,
-        loginError: null,
+        loginError: [],
         jwt: payload.token,
-        userError: null,
+        userError: [],
       };
 
     case USER_REGISTER_SUCCESS:
       return {
         ...state,
-        loading:false,
-        loggedIn:true,
-        user:payload.user,
-        jwt:payload.token
-      }
+        loading: false,
+        loggedIn: true,
+        user: payload.user,
+        jwt: payload.token,
+      };
 
     case GET_USER_DATA_SUCCESS:
       return {
@@ -65,7 +65,7 @@ export default (state, action) => {
       return {
         ...state,
         user: {},
-        loginError: null,
+        loginError: [],
         loggedIn: false,
         loading: false,
         jwt: null,
@@ -74,20 +74,29 @@ export default (state, action) => {
     case GET_USER_DATA_FAIL:
       return {
         ...state,
-        userError: payload,
+        userError: [
+          ...state.userError,
+          payload.error ? payload.error : payload.msg,
+        ],
       };
 
     case USER_LOGIN_FAIL:
       return {
         ...state,
-        loginError: payload,
+        loginError: [
+          ...state.loginError,
+          payload.error ? payload.error : payload.msg,
+        ],
       };
 
     case USER_REGISTER_FAIL:
       return {
         ...state,
-        registerError:payload
-      }
+        registerError: [
+          ...state.registerError,
+          payload.error ? payload.error : payload.msg,
+        ],
+      };
 
     default:
       break;

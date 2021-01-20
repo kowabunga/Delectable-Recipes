@@ -35,9 +35,7 @@ const LoginPage = ({ history }) => {
         </Alert>
       )}
 
-      {loginError && (
-        <Alert variant='danger'>{loginError.error}. Please try again.</Alert>
-      )}
+      {loginError && <Alert variant='danger'>{loginError}.</Alert>}
 
       <Row className='justify-content-center'>
         <Col lg={3} md={2}></Col>

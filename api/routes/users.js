@@ -1,6 +1,5 @@
 import express from 'express';
-import auth from '../../middleware/auth.js';
-import { check } from 'express-validator';
+import auth from '../../middleware/auth.js'
 import {
   getUserInfo,
   createUser,
@@ -20,14 +19,6 @@ router.get('/', auth, getUserInfo);
 // @access  public
 router.post(
   '/',
-  [
-    check('name', 'Name is required').notEmpty(),
-    check('email', 'Email is required').isEmail(),
-    check(
-      'password',
-      'Please enter a password with more than six characters'
-    ).isLength({ min: 6 }),
-  ],
   createUser
 );
 

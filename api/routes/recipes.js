@@ -1,6 +1,4 @@
 import express from 'express';
-import { check } from 'express-validator';
-import auth from '../../middleware/auth.js';
 import {
   getRecipes,
   getRecipeById,
@@ -26,14 +24,6 @@ router.get('/:id', getRecipeById);
 // @access  private - temp public
 router.post(
   '/',
-  [
-    auth,
-    check('recipeTitle', 'Recipe title is required').notEmpty(),
-    check('recipeDescription', 'Recipe description is required').notEmpty(),
-    check('recipeImage', 'Recipe image is required').notEmpty(),
-    check('ingredients', 'Recipe ingredients are required').notEmpty(),
-    check('recipeSteps', 'Recipe needs at least one step').isLength({ min: 1 }),
-  ],
   createRecipe
 );
 
@@ -42,14 +32,6 @@ router.post(
 // @access  private
 router.put(
   '/:id',
-  [
-    auth,
-    check('recipeTitle', 'Recipe title is required').notEmpty(),
-    check('recipeDescription', 'Recipe description is required').notEmpty(),
-    check('recipeImage', 'Recipe image is required').notEmpty(),
-    check('ingredients', 'Recipe ingredients are required').notEmpty(),
-    check('recipeSteps', 'Recipe needs at least one step').isLength({ min: 1 }),
-  ],
   updateRecipe
 );
 

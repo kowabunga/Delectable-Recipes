@@ -16,12 +16,28 @@ const RegisterPage = ({ history }) => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
+  const [validated, setValidated] = useState(false);
+
   const userContext = useContext(UserContext);
   const { registerUser, loggedIn, registerError } = userContext;
 
   const register = e => {
+    const form = e.currentTarget;
     e.preventDefault();
-    registerUser(name, email, password);
+    if (form.checkValidity() === false) {
+      e.stopPropagation();
+    }
+
+    setValidated(true);
+
+    if (
+      name !== '' &&
+      email !== '' &&
+      password !== '' &&
+      confirmPassword !== ''
+    ) {
+      registerUser(name, email, password, confirmPassword);
+    }
   };
 
   useEffect(() => {
@@ -30,56 +46,74 @@ const RegisterPage = ({ history }) => {
 
   return (
     <>
-      {registerError && <Alert variant='danger'>{registerError}</Alert>}
+      {registerError.length > 0 &&
+        registerError.map(error => <Alert variant='danger'>{error}</Alert>)}
       <Row className='justify-content-center'>
         <Col lg={3} md={2}></Col>
         <Col lg={6} md={8}>
-          <Form className='mt-3'>
+          <Form
+            className='mt-3'
+            noValidate
+            validated={validated}
+            onSubmit={register}
+          >
             <FormGroup controlId='name' autoComplete='off'>
               <FormLabel>Name</FormLabel>
               <FormControl
+                required
                 type='text'
                 placeholder='Enter name...'
                 variant={name}
                 onChange={e => setName(e.target.value)}
               />
+              <Form.Control.Feedback type='invalid'>
+                Please enter your name.
+              </Form.Control.Feedback>
             </FormGroup>
 
             <FormGroup controlId='email'>
               <FormLabel>Email</FormLabel>
               <FormControl
+                required
                 type='email'
                 placeholder='Enter email...'
                 variant={email}
                 onChange={e => setEmail(e.target.value)}
               />
+              <Form.Control.Feedback type='invalid'>
+                Please enter a valid email.
+              </Form.Control.Feedback>
             </FormGroup>
 
             <FormGroup controlId='password'>
               <FormLabel>Password</FormLabel>
               <FormControl
+                required
                 type='password'
                 placeholder='Enter password...'
                 variant={password}
                 onChange={e => setPassword(e.target.value)}
               />
+              <Form.Control.Feedback type='invalid'>
+                Enter your password.
+              </Form.Control.Feedback>
             </FormGroup>
 
             <FormGroup controlId='confirmpassword'>
               <FormLabel>Confirm Password</FormLabel>
               <FormControl
+                required
                 type='password'
                 placeholder='Enter password...'
                 variant={confirmPassword}
                 onChange={e => setConfirmPassword(e.target.value)}
               />
+              <Form.Control.Feedback type='invalid'>
+                Enter your password again.
+              </Form.Control.Feedback>
             </FormGroup>
 
-            <Button
-              variant='outline-primary'
-              type='button'
-              onClick={e => register(e)}
-            >
+            <Button variant='outline-primary' type='submit'>
               Register
             </Button>
           </Form>

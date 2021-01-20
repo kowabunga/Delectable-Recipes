@@ -1,22 +1,15 @@
 import Recipe from '../../models/Recipe.js';
 import User from '../../models/User.js';
-import checkValidationResult from '../../utilities/checkValidationResults.js';
 import createJwt from '../../utilities/createJWT.js';
 
 export const getUserInfo = async (req, res) => {
   try {
-    // Run validation check. If errors exist, send 400 status and errors list
-    const [hasError, errors] = checkValidationResult(req, res);
-    if (hasError) res.status(400).json({ errors: errors.array() });
-
     const user = await User.findById({ _id: req.user.id }).select(
       '-password -passwordResetTokenExpiry -_id'
     );
 
     if (!user) {
-      return res
-        .status(400)
-        .json({ success: false, msg: 'User does not exist' });
+      return res.status(400).json({ msg: 'User does not exist' });
     }
 
     return res.status(200).json(user);
@@ -28,20 +21,18 @@ export const getUserInfo = async (req, res) => {
 
 export const createUser = async (req, res) => {
   try {
-    // Run validation check. If errors exist, send 400 status and errors list
-    const [hasError, errors] = checkValidationResult(req, res);
-    if (hasError) res.status(400).json({ errors: errors.array() });
-
-    const { name, email, password } = req.body;
+    const { name, email, password, confirmPassword } = req.body;
     let user = await User.findOne({ email: email });
 
     //   Check if user exists. Return error if so
     if (user) {
-      return res
-        .status(400)
-        .json({ success: false, error: 'User already exists' });
+      return res.status(400).json({ error: 'User already exists' });
     }
 
+    if (password !== confirmPassword) {
+      return res.staus(400).json({ error: 'Passwords do not match' });
+    }
+    
     //   Create new user
     user = new User({
       name,
@@ -72,7 +63,7 @@ export const updateUser = async (req, res) => {
     let user = await User.findById(req.user.id);
 
     if (!user) {
-      return res.status(400).json({ success: false, msg: 'User not found' });
+      return res.status(400).json({ msg: 'User not found' });
     }
 
     const { email, name, oldPassword, newPassword } = req.body;
@@ -88,9 +79,7 @@ export const updateUser = async (req, res) => {
       await user.save();
       return res.status(200).json({ success: true, user });
     } else {
-      return res
-        .status(400)
-        .json({ success: false, msg: 'Old password mismatch' });
+      return res.status(400).json({ msg: 'Old password mismatch' });
     }
   } catch (error) {
     console.error(error.message);
@@ -103,9 +92,7 @@ export const getUserRecipes = async (req, res) => {
     const recipes = await Recipe.find({ user: req.user.id });
 
     if (!recipes) {
-      return res
-        .status(400)
-        .json({ success: false, error: 'User has no recipes' });
+      return res.status(400).json({ error: 'User has no recipes' });
     }
 
     res.status(200).json(recipes);

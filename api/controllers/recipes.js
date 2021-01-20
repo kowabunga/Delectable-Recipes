@@ -1,5 +1,4 @@
 import Recipe from '../../models/Recipe.js';
-import checkValidationResult from '../../utilities/checkValidationResults.js';
 
 export const getRecipes = async (req, res) => {
   try {
@@ -30,10 +29,6 @@ export const getRecipeById = async (req, res) => {
 };
 
 export const createRecipe = async (req, res) => {
-  // Run validation check. If errors exist, send 400 status and errors list
-  const [hasError, errors] = checkValidationResult(req, res);
-  if (hasError) res.status(400).json({ errors: errors.array() });
-
   try {
     // ! See if this is even needed
     //  get the logged in user - need to add user id to recipe.
@@ -72,10 +67,6 @@ export const createRecipe = async (req, res) => {
 };
 
 export const updateRecipe = async (req, res) => {
-  // Run validation check. If errors exist, send 400 status and errors list
-  const [hasError, errors] = checkValidationResult(req, res);
-  if (hasError) res.status(400).json({ errors: errors.array() });
-
   try {
     const {
       recipeTitle,
