@@ -22,7 +22,7 @@ const MyAccountPage = () => {
 
   // If usererror - i.e. can't get user info such as if user has been deleted, logout and return to login
   useEffect(() => {
-    userError && logoutUser();
+    userError.length > 0 && logoutUser();
   }, [userError]);
 
   return (

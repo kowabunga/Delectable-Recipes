@@ -30,9 +30,9 @@ export const createUser = async (req, res) => {
     }
 
     if (password !== confirmPassword) {
-      return res.staus(400).json({ error: 'Passwords do not match' });
+      return res.status(400).json({ error: 'Passwords do not match' });
     }
-    
+
     //   Create new user
     user = new User({
       name,
@@ -51,7 +51,7 @@ export const createUser = async (req, res) => {
     };
 
     const token = createJwt(payload);
-    res.status(200).json({ user: { name, email }, token: token });
+    res.status(200).json({ token: token });
   } catch (error) {
     console.error(error.message);
     res.status(500).send('Server Error');

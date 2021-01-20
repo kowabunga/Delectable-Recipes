@@ -29,13 +29,18 @@ const LoginPage = ({ history }) => {
 
   return (
     <>
-      {userError && (
+      {userError.length > 0 && (
         <Alert variant='danger'>
           Something went wrong. Please login again.
         </Alert>
       )}
 
-      {loginError && <Alert variant='danger'>{loginError}.</Alert>}
+      {loginError.length > 0 &&
+        loginError.map((error, idx) => (
+          <Alert key={idx} variant='danger'>
+            {error}.
+          </Alert>
+        ))}
 
       <Row className='justify-content-center'>
         <Col lg={3} md={2}></Col>

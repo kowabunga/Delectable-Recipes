@@ -41,13 +41,17 @@ const RegisterPage = ({ history }) => {
   };
 
   useEffect(() => {
-    loggedIn && history.push('/account');
-  });
+    loggedIn && registerError.length <= 0 && history.push('/account');
+  }, [loggedIn, registerError]);
 
   return (
     <>
       {registerError.length > 0 &&
-        registerError.map(error => <Alert variant='danger'>{error}</Alert>)}
+        registerError.map((error, idx) => (
+          <Alert key={idx} variant='danger'>
+            {error}
+          </Alert>
+        ))}
       <Row className='justify-content-center'>
         <Col lg={3} md={2}></Col>
         <Col lg={6} md={8}>

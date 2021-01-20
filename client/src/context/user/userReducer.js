@@ -43,7 +43,6 @@ export default (state, action) => {
         ...state,
         loading: false,
         loggedIn: true,
-        user: payload.user,
         jwt: payload.token,
       };
 
