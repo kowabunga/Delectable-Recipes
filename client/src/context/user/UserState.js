@@ -7,6 +7,9 @@ import {
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
   USER_LOGOUT_SUCCESS,
+  USER_REGISTER_FAIL,
+  USER_REGISTER_REQUEST,
+  USER_REGISTER_SUCCESS,
   GET_USER_DATA_FAIL,
   GET_USER_DATA_REQUEST,
   GET_USER_DATA_SUCCESS,
@@ -26,11 +29,20 @@ const UserState = props => {
     loading: false,
     jwt: null,
     userError: null,
+    registerError:null
   };
 
   const [state, dispatch] = useReducer(UserReducer, initialState);
 
-  const { user, loggedIn, loading, loginError, jwt, userError } = state;
+  const {
+    user,
+    loggedIn,
+    loading,
+    loginError,
+    jwt,
+    userError,
+    registerError,
+  } = state;
 
   const logInUser = async (email, password) => {
     try {
@@ -110,21 +122,54 @@ const UserState = props => {
 
       dispatch({ type: GET_USER_RECIPES_SUCCESS, payload: data });
     } catch (error) {
-      dispatch({ type: GET_USER_RECIPES_FAIL, payload: error });
+      dispatch({
+        type: GET_USER_RECIPES_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+
+  const registerUser = async (name, email, password) => {
+    try {
+      //@TODO add front end validation for password and confirm password
+      dispatch({ type: USER_REGISTER_REQUEST });
+      const { data } = await axios.post(
+        '/api/users',
+        { name, email, password },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      dispatch({ type: USER_REGISTER_SUCCESS, payload: data });
+    } catch (error) {
+      dispatch({
+        type: USER_REGISTER_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
     }
   };
 
   return (
     <UserContext.Provider
       value={{
+        jwt,
         user,
         loggedIn,
         loading,
         loginError,
-        jwt,
         userError,
+        registerError,
         logInUser,
         logoutUser,
+        registerUser,
         setUserLoggedIn,
         getUserInformation,
         getUserRecipes,

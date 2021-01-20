@@ -7,12 +7,16 @@ import {
   GET_USER_DATA_REQUEST,
   GET_USER_DATA_SUCCESS,
   SET_USER_LOGGED_IN_ON_RELOAD,
+  USER_REGISTER_SUCCESS,
+  USER_REGISTER_REQUEST,
+  USER_REGISTER_FAIL,
 } from '../../types';
 
 export default (state, action) => {
   const { type, payload } = action;
 
   switch (type) {
+    case USER_REGISTER_REQUEST:
     case GET_USER_DATA_REQUEST:
     case USER_LOGIN_REQUEST:
       return {
@@ -20,6 +24,8 @@ export default (state, action) => {
         loading: true,
         userError: null,
         loginError: null,
+        registerError:null,
+        user:{},
       };
 
     case USER_LOGIN_SUCCESS:
@@ -31,6 +37,15 @@ export default (state, action) => {
         jwt: payload.token,
         userError: null,
       };
+
+    case USER_REGISTER_SUCCESS:
+      return {
+        ...state,
+        loading:false,
+        loggedIn:true,
+        user:payload.user,
+        jwt:payload.token
+      }
 
     case GET_USER_DATA_SUCCESS:
       return {
@@ -67,6 +82,12 @@ export default (state, action) => {
         ...state,
         loginError: payload,
       };
+
+    case USER_REGISTER_FAIL:
+      return {
+        ...state,
+        registerError:payload
+      }
 
     default:
       break;

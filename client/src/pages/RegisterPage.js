@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -7,22 +7,35 @@ import FormLabel from 'react-bootstrap/FormLabel';
 import FormControl from 'react-bootstrap/FormControl';
 import FormGroup from 'react-bootstrap/FormGroup';
 import Button from 'react-bootstrap/Button';
+import Alert from 'react-bootstrap/Alert';
+import UserContext from '../context/user/userContext';
 
-const RegisterPage = () => {
+const RegisterPage = ({ history }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const register = e => {};
+  const userContext = useContext(UserContext);
+  const { registerUser, loggedIn, registerError } = userContext;
+
+  const register = e => {
+    e.preventDefault();
+    registerUser(name, email, password);
+  };
+
+  useEffect(() => {
+    loggedIn && history.push('/account');
+  });
 
   return (
     <>
+      {registerError && <Alert variant='danger'>{registerError}</Alert>}
       <Row className='justify-content-center'>
         <Col lg={3} md={2}></Col>
         <Col lg={6} md={8}>
           <Form className='mt-3'>
-            <FormGroup controlId='name'>
+            <FormGroup controlId='name' autoComplete='off'>
               <FormLabel>Name</FormLabel>
               <FormControl
                 type='text'
