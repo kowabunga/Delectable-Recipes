@@ -1,8 +1,12 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { LinkContainer } from 'react-router-bootstrap';
 import UserContext from './context/user/userContext';
 import PrivateRoute from './components/PrivateRoute';
 import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
 import Header from './components/Header';
 import LandingPage from './pages/LandingPage';
 import RecipeDetailsPage from './pages/RecipeDetailsPage';
@@ -11,13 +15,14 @@ import Login from './pages/LoginPage';
 import Register from './pages/RegisterPage';
 import MyAccount from './pages/MyAccountPage';
 import RecipeCreatePage from './pages/RecipeCreatePage';
+import RecipeUpdatePage from './pages/RecipeUpdatePage';
 import MyAccountEditPage from './pages/MyAccountEditPage';
 import MyRecipesPage from './pages/MyRecipesPage';
 import PageNotFound from './pages/PageNotFound';
 
 const MainApp = () => {
   const userContext = useContext(UserContext);
-  const { setUserLoggedIn } = userContext;
+  const { setUserLoggedIn, loggedIn } = userContext;
 
   useEffect(() => {
     // Check if user previously logged in has jwt in local storage on page load
@@ -36,6 +41,10 @@ const MainApp = () => {
             <Route exact path='/recipes' component={RecipesPage} />
             <PrivateRoute path='/recipes/create' component={RecipeCreatePage} />
             <Route path='/recipes/:id' component={RecipeDetailsPage} />
+            <PrivateRoute
+              path='recipes/:id/update'
+              component={RecipeUpdatePage}
+            />
             <PrivateRoute exact path='/account' component={MyAccount} />
             <PrivateRoute path='/account/edit' component={MyAccountEditPage} />
             <PrivateRoute path='/account/recipes' component={MyRecipesPage} />
