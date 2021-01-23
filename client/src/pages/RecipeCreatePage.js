@@ -9,18 +9,25 @@ import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import UserContext from '../context/user/userContext';
 
+//@todo Recipe Step Stuff
 const RecipeCreatePage = () => {
   // Use a reference to the input to clear on value on ingredient add
   const ingredientRef = useRef(null);
+  const stepTitleRef = useRef(null);
+  const stepDescriptionRef = useRef(null);
+  const stepMediaRef = useRef(null);
 
   const [recipe, setRecipe] = useState({});
   const [formPageNum, setFormPageNum] = useState(0);
   const [validated, setValidated] = useState(false);
   const [recipeTitle, setRecipeTitle] = useState('');
   const [recipeDescription, setRecipeDescription] = useState('');
-  const [recipeImage, setRecipeImage] = useState('');
+  const [recipeMedia, setRecipeMedia] = useState('');
   const [ingredient, setIngredient] = useState('');
   const [ingredients, setIngredients] = useState([]);
+  const [stepTitle, setStepTitle] = useState('');
+  const [stepDescription, setStepDescription] = useState('');
+  const [stepMedia, setStepMedia] = useState('');
   const [recipeSteps, setRecipeSteps] = useState([]);
 
   const createRecipe = e => {
@@ -45,10 +52,7 @@ const RecipeCreatePage = () => {
   };
 
   return (
-    <Row>
-      {ingredients.map((i, idx) => (
-        <p key={idx}>{i}</p>
-      ))}
+    <Row className='justify-content-center'>
       <Col lg={8} md={10}>
         <h1 className='text-center'>Create Your Recipe</h1>
         <Form noValidate validated={validated} onSubmit={createRecipe}>
@@ -76,14 +80,14 @@ const RecipeCreatePage = () => {
                 />
               </FormGroup>
 
-              <FormGroup controlId='recipeImage' autoComplete='off'>
+              <FormGroup controlId='recipeMedia' autoComplete='off'>
                 <FormLabel>Image</FormLabel>
                 <FormControl
                   required
                   type='text'
                   placeholder='Enter an image for your finished recipe...'
-                  value={recipeImage}
-                  onChange={e => setRecipeImage(e.target.value)}
+                  value={recipeMedia}
+                  onChange={e => setRecipeMedia(e.target.value)}
                 />
               </FormGroup>
             </>
@@ -115,7 +119,18 @@ const RecipeCreatePage = () => {
               </Button>
             </>
           ) : (
-            <></>
+            <>
+              <FormGroup>
+                <FormLabel>Step Title</FormLabel>
+                <FormControl
+                  required
+                  type='text'
+                  placeholder='Enter step title'
+                  value={stepTitle}
+                  onChange={e => setStepTitle(e.target.value)}
+                ></FormControl>
+              </FormGroup>
+            </>
           )}
 
           <Button
