@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -10,13 +10,16 @@ import Alert from 'react-bootstrap/Alert';
 import UserContext from '../context/user/userContext';
 
 const RecipeCreatePage = () => {
+  // Use a reference to the input to clear on value on ingredient add
+  const ingredientRef = useRef(null);
+
   const [recipe, setRecipe] = useState({});
   const [formPageNum, setFormPageNum] = useState(0);
   const [validated, setValidated] = useState(false);
   const [recipeTitle, setRecipeTitle] = useState('');
   const [recipeDescription, setRecipeDescription] = useState('');
   const [recipeImage, setRecipeImage] = useState('');
-
+  const [ingredient, setIngredient] = useState('');
   const [ingredients, setIngredients] = useState([]);
   const [recipeSteps, setRecipeSteps] = useState([]);
 
@@ -30,12 +33,22 @@ const RecipeCreatePage = () => {
     setValidated(true);
   };
 
-  const addIngredient = ingredient => {
+  // Add ingredient to ingredient arr & clear current ingredient
+  const addIngredient = () => {
     setIngredients([...ingredients, ingredient]);
+    setIngredient('');
+    ingredientRef.current.value = '';
+    console.log(recipeTitle);
+    console.log(recipeDescription);
+    console.table(ingredients);
+    console.table(recipeSteps);
   };
 
   return (
     <Row>
+      {ingredients.map((i, idx) => (
+        <p key={idx}>{i}</p>
+      ))}
       <Col lg={8} md={10}>
         <h1 className='text-center'>Create Your Recipe</h1>
         <Form noValidate validated={validated} onSubmit={createRecipe}>
@@ -57,7 +70,7 @@ const RecipeCreatePage = () => {
                 <FormControl
                   required
                   type='text'
-                  placeholder='Enter recipe title...'
+                  placeholder='Enter recipe description...'
                   variant={recipeDescription}
                   onChange={e => setRecipeDescription(e.target.value)}
                 />
@@ -77,17 +90,19 @@ const RecipeCreatePage = () => {
           ) : formPageNum === 1 ? (
             <>
               <p className='lead'>
-                Add your ingredients one at a time. Click 'Add Ingredient' to
-                add it to the list. Click 'Continue' when you are done.
+                Add your ingredients one at a time with the measurement first,
+                such as <em>1/4 cup Flour</em>. Click <em>Add Ingredient</em> to
+                add it to the list. Click <em>Continue</em> when you are done.
               </p>
-              <FormGroup controlId='recipeTitle' autoComplete='off'>
+              <FormGroup controlId='ingredient' autoComplete='off'>
                 <FormLabel>Ingredient</FormLabel>
                 <FormControl
                   required
                   type='text'
-                  placeholder='Enter recipe title...'
-                  variant={recipeTitle}
-                  onChange={e => setRecipeTitle(e.target.value)}
+                  placeholder='Enter ingredient and measurement...'
+                  variant={ingredient}
+                  onChange={e => setIngredient(e.target.value)}
+                  ref={ingredientRef}
                 />
               </FormGroup>
               <Button
