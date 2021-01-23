@@ -67,7 +67,7 @@ const RegisterPage = ({ history }) => {
                 required
                 type='text'
                 placeholder='Enter name...'
-                variant={name}
+                value={name}
                 onChange={e => setName(e.target.value)}
               />
               <Form.Control.Feedback type='invalid'>
@@ -81,7 +81,7 @@ const RegisterPage = ({ history }) => {
                 required
                 type='email'
                 placeholder='Enter email...'
-                variant={email}
+                value={email}
                 onChange={e => setEmail(e.target.value)}
               />
               <Form.Control.Feedback type='invalid'>
@@ -95,7 +95,7 @@ const RegisterPage = ({ history }) => {
                 required
                 type='password'
                 placeholder='Enter password...'
-                variant={password}
+                value={password}
                 onChange={e => setPassword(e.target.value)}
               />
               <Form.Control.Feedback type='invalid'>
@@ -109,7 +109,7 @@ const RegisterPage = ({ history }) => {
                 required
                 type='password'
                 placeholder='Enter password...'
-                variant={confirmPassword}
+                value={confirmPassword}
                 onChange={e => setConfirmPassword(e.target.value)}
               />
               <Form.Control.Feedback type='invalid'>

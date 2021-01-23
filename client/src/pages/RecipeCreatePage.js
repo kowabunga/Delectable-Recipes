@@ -60,7 +60,7 @@ const RecipeCreatePage = () => {
                   required
                   type='text'
                   placeholder='Enter recipe title...'
-                  variant={recipeTitle}
+                  value={recipeTitle}
                   onChange={e => setRecipeTitle(e.target.value)}
                 />
               </FormGroup>
@@ -71,7 +71,7 @@ const RecipeCreatePage = () => {
                   required
                   type='text'
                   placeholder='Enter recipe description...'
-                  variant={recipeDescription}
+                  value={recipeDescription}
                   onChange={e => setRecipeDescription(e.target.value)}
                 />
               </FormGroup>
@@ -82,7 +82,7 @@ const RecipeCreatePage = () => {
                   required
                   type='text'
                   placeholder='Enter an image for your finished recipe...'
-                  variant={recipeImage}
+                  value={recipeImage}
                   onChange={e => setRecipeImage(e.target.value)}
                 />
               </FormGroup>
@@ -94,13 +94,13 @@ const RecipeCreatePage = () => {
                 such as <em>1/4 cup Flour</em>. Click <em>Add Ingredient</em> to
                 add it to the list. Click <em>Continue</em> when you are done.
               </p>
-              <FormGroup controlId='ingredient' autoComplete='off'>
+              <FormGroup controlId='recipeIngredient' autoComplete='off'>
                 <FormLabel>Ingredient</FormLabel>
                 <FormControl
                   required
                   type='text'
                   placeholder='Enter ingredient and measurement...'
-                  variant={ingredient}
+                  value={ingredient}
                   onChange={e => setIngredient(e.target.value)}
                   ref={ingredientRef}
                 />

@@ -51,7 +51,7 @@ const LoginPage = ({ history }) => {
               <FormControl
                 type='email'
                 placeholder='Enter email...'
-                variant={email}
+                value={email}
                 onChange={e => setEmail(e.target.value)}
               />
             </FormGroup>
@@ -61,7 +61,7 @@ const LoginPage = ({ history }) => {
               <FormControl
                 type='password'
                 placeholder='Enter password...'
-                variant={password}
+                value={password}
                 onChange={e => setPassword(e.target.value)}
               />
             </FormGroup>

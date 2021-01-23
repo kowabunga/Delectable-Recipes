@@ -60,6 +60,7 @@ const RecipesPage = () => {
                   placeholder='Search for recipe...'
                   id='recipeSearchBox'
                   onChange={e => setRecipeQuery(e.target.value)}
+                  value={recipeQuery}
                 ></FormControl>
               </Col>
               <Col lg={3} sm={4} xs={3}>
