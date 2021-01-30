@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -11,24 +11,61 @@ import UserContext from '../context/user/userContext';
 
 //@todo Recipe Step Stuff
 const RecipeCreatePage = () => {
-  // Use a reference to the input to clear on value on ingredient add
-  const ingredientRef = useRef(null);
-  const stepTitleRef = useRef(null);
-  const stepDescriptionRef = useRef(null);
-  const stepMediaRef = useRef(null);
+  const [hasAlert, setHasAlert] = useState(false);
+  const [alertMsg, setAlertMsg] = useState('');
 
-  const [recipe, setRecipe] = useState({});
+  const [ingAdd, setIngAdd] = useState(false);
+
   const [formPageNum, setFormPageNum] = useState(0);
   const [validated, setValidated] = useState(false);
   const [recipeTitle, setRecipeTitle] = useState('');
   const [recipeDescription, setRecipeDescription] = useState('');
-  const [recipeMedia, setRecipeMedia] = useState('');
+  const [recipeImage, setRecipeImage] = useState('');
   const [ingredient, setIngredient] = useState('');
   const [ingredients, setIngredients] = useState([]);
   const [stepTitle, setStepTitle] = useState('');
-  const [stepDescription, setStepDescription] = useState('');
+  const [stepDirection, setstepDirection] = useState('');
   const [stepMedia, setStepMedia] = useState('');
+  const [stepMediaType, setStepMediaType] = useState('media');
   const [recipeSteps, setRecipeSteps] = useState([]);
+
+  const nextPage = () => {
+    if (formPageNum === 0) {
+      if (
+        recipeTitle.length > 0 &&
+        recipeDescription.length > 0 &&
+        recipeImage.length > 0
+      ) {
+        setFormPageNum(formPageNum + 1);
+        setHasAlert(false);
+        setAlertMsg('');
+      } else {
+        setHasAlert(true);
+        setAlertMsg('You must enter all fields to continue');
+      }
+    } else if (formPageNum === 1) {
+      if (ingredients.length > 0) {
+        setFormPageNum(formPageNum + 1);
+        setHasAlert(false);
+        setAlertMsg('');
+      } else {
+        setHasAlert(true);
+        setAlertMsg('Every recipe needs ingredients. Please enter some!');
+      }
+    } else {
+      const step = {
+        title: stepTitle,
+        directions: stepDirection,
+        media: stepMedia,
+        mediaType: stepMediaType,
+      };
+      setStepTitle('');
+      setstepDirection('');
+      setStepMedia('');
+      setRecipeSteps([...recipeSteps, step]);
+      console.table(recipeSteps);
+    }
+  };
 
   const createRecipe = e => {
     const form = e.currentTarget;
@@ -38,23 +75,34 @@ const RecipeCreatePage = () => {
     }
 
     setValidated(true);
+
+    const recipe = {
+      recipeTitle,
+      recipeDescription,
+      recipeImage,
+      ingredients,
+      recipeSteps,
+    };
+
+    console.log(recipe);
   };
 
   // Add ingredient to ingredient arr & clear current ingredient
   const addIngredient = () => {
+    setIngAdd(true);
     setIngredients([...ingredients, ingredient]);
     setIngredient('');
-    ingredientRef.current.value = '';
-    console.log(recipeTitle);
-    console.log(recipeDescription);
-    console.table(ingredients);
-    console.table(recipeSteps);
+    console.log(ingredients);
+    setTimeout(() => {
+      setIngAdd(false);
+    }, 2500);
   };
 
   return (
     <Row className='justify-content-center'>
       <Col lg={8} md={10}>
         <h1 className='text-center'>Create Your Recipe</h1>
+        {hasAlert && <Alert variant='danger'>{alertMsg}</Alert>}
         <Form noValidate validated={validated} onSubmit={createRecipe}>
           {formPageNum === 0 ? (
             <>
@@ -80,14 +128,14 @@ const RecipeCreatePage = () => {
                 />
               </FormGroup>
 
-              <FormGroup controlId='recipeMedia' autoComplete='off'>
+              <FormGroup controlId='recipeImage' autoComplete='off'>
                 <FormLabel>Image</FormLabel>
                 <FormControl
                   required
                   type='text'
                   placeholder='Enter an image for your finished recipe...'
-                  value={recipeMedia}
-                  onChange={e => setRecipeMedia(e.target.value)}
+                  value={recipeImage}
+                  onChange={e => setRecipeImage(e.target.value)}
                 />
               </FormGroup>
             </>
@@ -98,6 +146,8 @@ const RecipeCreatePage = () => {
                 such as <em>1/4 cup Flour</em>. Click <em>Add Ingredient</em> to
                 add it to the list. Click <em>Continue</em> when you are done.
               </p>
+
+              {ingAdd && <Alert variant='success'>Ingredient Added</Alert>}
               <FormGroup controlId='recipeIngredient' autoComplete='off'>
                 <FormLabel>Ingredient</FormLabel>
                 <FormControl
@@ -106,7 +156,6 @@ const RecipeCreatePage = () => {
                   placeholder='Enter ingredient and measurement...'
                   value={ingredient}
                   onChange={e => setIngredient(e.target.value)}
-                  ref={ingredientRef}
                 />
               </FormGroup>
               <Button
@@ -123,11 +172,30 @@ const RecipeCreatePage = () => {
               <FormGroup>
                 <FormLabel>Step Title</FormLabel>
                 <FormControl
-                  required
                   type='text'
                   placeholder='Enter step title'
                   value={stepTitle}
                   onChange={e => setStepTitle(e.target.value)}
+                ></FormControl>
+              </FormGroup>
+
+              <FormGroup>
+                <FormLabel>Step Directions</FormLabel>
+                <FormControl
+                  type='text'
+                  placeholder='Enter step directions...'
+                  value={stepDirection}
+                  onChange={e => setstepDirection(e.target.value)}
+                ></FormControl>
+              </FormGroup>
+
+              <FormGroup>
+                <FormLabel>Step Media (optional)</FormLabel>
+                <FormControl
+                  type='text'
+                  placeholder='Enter optional step media...'
+                  value={stepMedia}
+                  onChange={e => setStepMedia(e.target.value)}
                 ></FormControl>
               </FormGroup>
             </>
@@ -138,7 +206,7 @@ const RecipeCreatePage = () => {
             variant='info'
             className='mb-1'
             block
-            onClick={() => setFormPageNum(formPageNum + 1)}
+            onClick={() => nextPage()}
           >
             {formPageNum === 0
               ? 'Start Recipe'
