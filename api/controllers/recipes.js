@@ -30,16 +30,6 @@ export const getRecipeById = async (req, res) => {
 
 export const createRecipe = async (req, res) => {
   try {
-    // ! See if this is even needed
-    //  get the logged in user - need to add user id to recipe.
-    // const user = await User.findById(req.user.id);
-
-    // if (!user) {
-    //   return res
-    //     .status(400)
-    //     .json({ success: false, error: 'User does not exist' });
-    // }
-
     const {
       recipeTitle,
       recipeDescription,

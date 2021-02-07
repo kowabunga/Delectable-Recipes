@@ -84,7 +84,7 @@ const RecipeCreatePage = () => {
       recipeSteps,
     };
 
-    console.log(recipe);
+    // Create recipe from context
   };
 
   // Add ingredient to ingredient arr & clear current ingredient
