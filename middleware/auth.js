@@ -14,8 +14,6 @@ const auth = (req, res, next) => {
     // Add user to request parameters
     req.user = verifiedToken.user;
 
-    console.log('Middleware ', req.user);
-
     next();
   } catch (error) {
     res.status(401).json({ msg: 'Invalid token' });

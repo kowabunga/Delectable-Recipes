@@ -59,17 +59,17 @@ const RecipeState = props => {
     }
   };
 
-  const createRecipe = async (recipe, name) => {
+  const createRecipe = async (recipe, name, jwt) => {
     try {
       console.log(name);
       dispatch({ type: CREATE_RECIPE_REQUEST });
-      const { data } = await axios.post(
+      await axios.post(
         '/api/recipes',
-        { recipe, userName:name },
+        { recipe, userName: name },
         {
           headers: {
             'Content-Type': 'application/json',
-            'x-auth-token': localStorage.getItem('delec_recipe_jwt'),
+            'x-auth-token': jwt,
           },
         }
       );
