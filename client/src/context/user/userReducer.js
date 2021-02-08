@@ -7,19 +7,25 @@ import {
   GET_USER_DATA_REQUEST,
   GET_USER_DATA_SUCCESS,
   SET_USER_LOGGED_IN_ON_RELOAD,
+  USER_REGISTER_SUCCESS,
+  USER_REGISTER_REQUEST,
+  USER_REGISTER_FAIL,
 } from '../../types';
 
 export default (state, action) => {
   const { type, payload } = action;
 
   switch (type) {
+    case USER_REGISTER_REQUEST:
     case GET_USER_DATA_REQUEST:
     case USER_LOGIN_REQUEST:
       return {
         ...state,
         loading: true,
-        userError: null,
-        loginError: null,
+        userError: [],
+        loginError: [],
+        registerError: [],
+        user: {},
       };
 
     case USER_LOGIN_SUCCESS:
@@ -27,9 +33,17 @@ export default (state, action) => {
         ...state,
         loading: false,
         loggedIn: true,
-        loginError: null,
+        loginError: [],
         jwt: payload.token,
-        userError: null,
+        userError: [],
+      };
+
+    case USER_REGISTER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        loggedIn: true,
+        jwt: payload.token,
       };
 
     case GET_USER_DATA_SUCCESS:
@@ -50,7 +64,7 @@ export default (state, action) => {
       return {
         ...state,
         user: {},
-        loginError: null,
+        loginError: [],
         loggedIn: false,
         loading: false,
         jwt: null,
@@ -59,13 +73,28 @@ export default (state, action) => {
     case GET_USER_DATA_FAIL:
       return {
         ...state,
-        userError: payload,
+        userError: [
+          ...state.userError,
+          payload.error ? payload.error : payload.msg,
+        ],
       };
 
     case USER_LOGIN_FAIL:
       return {
         ...state,
-        loginError: payload,
+        loginError: [
+          ...state.loginError,
+          payload.error ? payload.error : payload.msg,
+        ],
+      };
+
+    case USER_REGISTER_FAIL:
+      return {
+        ...state,
+        registerError: [
+          ...state.registerError,
+          payload.error ? payload.error : payload.msg,
+        ],
       };
 
     default:

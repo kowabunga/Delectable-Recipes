@@ -8,8 +8,10 @@ import LandingPage from './pages/LandingPage';
 import RecipeDetailsPage from './pages/RecipeDetailsPage';
 import RecipesPage from './pages/RecipesPage';
 import Login from './pages/LoginPage';
+import Register from './pages/RegisterPage';
 import MyAccount from './pages/MyAccountPage';
 import RecipeCreatePage from './pages/RecipeCreatePage';
+import RecipeUpdatePage from './pages/RecipeUpdatePage';
 import MyAccountEditPage from './pages/MyAccountEditPage';
 import MyRecipesPage from './pages/MyRecipesPage';
 import PageNotFound from './pages/PageNotFound';
@@ -31,9 +33,14 @@ const MainApp = () => {
           <Switch>
             <Route exact path='/' component={LandingPage} />
             <Route path='/login' component={Login} />
+            <Route path='/register' component={Register} />
             <Route exact path='/recipes' component={RecipesPage} />
             <PrivateRoute path='/recipes/create' component={RecipeCreatePage} />
             <Route path='/recipes/:id' component={RecipeDetailsPage} />
+            <PrivateRoute
+              path='recipes/:id/update'
+              component={RecipeUpdatePage}
+            />
             <PrivateRoute exact path='/account' component={MyAccount} />
             <PrivateRoute path='/account/edit' component={MyAccountEditPage} />
             <PrivateRoute path='/account/recipes' component={MyRecipesPage} />

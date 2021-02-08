@@ -5,22 +5,10 @@ export const recipesData = [
     recipeImage:
       'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80',
     ingredients: [
-      {
-        amount: '1 lb.',
-        ingredient: 'Pizza Dough',
-      },
-      {
-        amount: '1/2 lb.',
-        ingredient: 'Mozzarella Cheese (sliced or shredded)',
-      },
-      {
-        amount: '1 cup',
-        ingredient: 'Tomato Sauce (preferably Italian style)',
-      },
-      {
-        amount: '1/4 cup',
-        ingredient: 'Freshly Chopped Basil',
-      },
+      '1 lb. Pizza Dough',
+      '1/2 lb. Mozzarella Cheese (sliced or shredded)',
+      '1 cup Tomato Sauce (preferably Italian style)',
+      '1/4 cup Freshly Chopped Basil',
     ],
     recipeSteps: [
       {
@@ -68,18 +56,9 @@ export const recipesData = [
     recipeTitle: "Waffle, Bacon n' Eggs",
     recipeDescription: 'Worlds Tastiest Waffle, Bacon and Eggs',
     ingredients: [
-      {
-        amount: 'Three strips',
-        ingredient: 'Bacon',
-      },
-      {
-        amount: 'Two',
-        ingredient: 'Eggs',
-      },
-      {
-        amount: 'Per Mix Instructions',
-        ingredient: 'Waffle Mix',
-      },
+      'Three strips Bacon',
+      'Two Eggs',
+      'Per Mix Instructions Waffle Mix',
     ],
     recipeImage:
       'https://images.unsplash.com/photo-1588464083058-989751d1a05f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80',

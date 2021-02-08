@@ -2,34 +2,25 @@
 // const jwt = require('jsonwebtoken');
 import bcrypt from 'bcryptjs';
 import User from '../../models/User.js';
-import { validationResult } from 'express-validator';
 import nodemailer from 'nodemailer';
 import crypto from 'crypto';
 import createJwt from '../../utilities/createJWT.js';
 
 export const login = async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-
   try {
     const { email, password } = req.body;
     let user = await User.findOne({ email: email });
 
     if (!user) {
-      return res
-        .status(401)
-        .json({ success: false, error: 'Invalid Credentials' });
+      return res.status(401).json({ error: 'Invalid Credentials' });
     }
 
     //   Compare passwords to check if the are the same
     const passMatch = await user.matchPasswords(password);
 
     if (!passMatch) {
-      return res
-        .status(401)
-        .json({ success: false, error: 'Invalid Credentials' });
+      console.log('PASSWORD ERROR');
+      return res.status(401).json({ error: 'Invalid Credentials' });
     }
 
     //   Create/sign/return json webtoken
@@ -54,9 +45,7 @@ export const sendResetLink = async (req, res) => {
     );
 
     if (!user) {
-      return res
-        .status(400)
-        .json({ success: false, msg: 'No user with that email' });
+      return res.status(400).json({ error: 'No user with that email' });
     }
 
     // Generate token
@@ -100,7 +89,7 @@ export const resetPassword = async (req, res) => {
     });
 
     if (!user) {
-      return res.status(400).json({ success: false, msg: 'Token expired' });
+      return res.status(400).json({ msg: 'Token expired' });
     }
 
     // Get new password, hash, and store in db. Clear out reset token and expiry
@@ -139,7 +128,6 @@ export const resetPassword = async (req, res) => {
 };
 
 async function sendEmail(req, user, token) {
-  console.log(`email Token: ${token}`);
   try {
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,

@@ -23,18 +23,9 @@ const RecipeSchema = new Schema({
     type: String,
     required: true,
   },
-  ingredients: [
-    {
-      amount: {
-        type: String,
-        required: true,
-      },
-      ingredient: {
-        type: String,
-        required: true,
-      },
-    },
-  ],
+  ingredients: {
+    type: [String],
+  },
   recipeSteps: [
     {
       title: {

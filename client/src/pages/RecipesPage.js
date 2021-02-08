@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
+import { LinkContainer } from 'react-router-bootstrap';
 import Spinner from 'react-bootstrap/Spinner';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -10,7 +11,7 @@ import RecipeGroup from '../components/RecipeGroup';
 import RecipeContext from '../context/recipes/recipeContext';
 import UserContext from '../context/user/userContext';
 
-const RecipesPage = ({ history }) => {
+const RecipesPage = () => {
   const [recipeQuery, setRecipeQuery] = useState('');
 
   const recipeContext = useContext(RecipeContext);
@@ -23,41 +24,30 @@ const RecipesPage = ({ history }) => {
     getAllRecipes();
   }, []);
 
-  const gotoAddRecipe = e => {
-    e.preventDefault();
-    history.push('/recipes/create');
-  };
-
   const searchRecipes = () => {};
 
   return (
     <>
-      {loggedIn && (
-        <Row>
-          <Col sm={12} className='justify-content-center mb-5'>
-            <p className='h3 text-center'>
-              Have something you want to share? A recipe to warm the heart?
-            </p>
-            <Button
-              onClick={e => gotoAddRecipe(e)}
-              className='mt-2'
-              variant='info'
-              size='sm'
-              block
-            >
-              Create Your Recipe
-            </Button>
-          </Col>
-        </Row>
-      )}
       <Row className='justify-content-center'>
-        <Col lg={10} md={8} sm={12}>
+        <Col lg={10} sm={12}>
           {loggedIn ? (
             <p className='h3 text-center'>
               Or, are you looking for something specific?
             </p>
           ) : (
             <p className='h3 text-center'>Looking for something specific?</p>
+          )}
+          {loggedIn && (
+            <Col sm={12} className='justify-content-center mb-5'>
+              <p className='h3 text-center'>
+                Have something you want to share? A recipe to warm the heart?
+              </p>
+              <LinkContainer to='/recipes/create'>
+                <Button className='mt-2' variant='info' size='sm' block>
+                  Create Your Recipe
+                </Button>
+              </LinkContainer>
+            </Col>
           )}
           <Form onSubmit={searchRecipes}>
             <Form.Row className='align-items-center'>
@@ -70,6 +60,7 @@ const RecipesPage = ({ history }) => {
                   placeholder='Search for recipe...'
                   id='recipeSearchBox'
                   onChange={e => setRecipeQuery(e.target.value)}
+                  value={recipeQuery}
                 ></FormControl>
               </Col>
               <Col lg={3} sm={4} xs={3}>

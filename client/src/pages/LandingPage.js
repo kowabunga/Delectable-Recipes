@@ -1,19 +1,20 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { LinkContainer } from 'react-router-bootstrap';
 import Spinner from 'react-bootstrap/Spinner';
-import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import FormLabel from 'react-bootstrap/FormLabel';
 import FormControl from 'react-bootstrap/FormControl';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+import Alert from 'react-bootstrap/Alert';
 import RecipeGroup from '../components/RecipeGroup';
 import RecipeContext from '../context/recipes/recipeContext';
 import UserContext from '../context/user/userContext';
 
 const LandingPage = () => {
   const recipeContext = useContext(RecipeContext);
-  const { recipes, getAllRecipes, loading } = recipeContext;
+  const { recipes, getAllRecipes, loading, recipeError } = recipeContext;
 
   const userContext = useContext(UserContext);
   const { setUserLoggedIn, loggedIn } = userContext;
@@ -33,6 +34,18 @@ const LandingPage = () => {
     <div className='justify-content-center align-items-center'>
       <Row>
         <Col>
+          {loggedIn && (
+            <div className='mb-3'>
+              <p className='h3 text-center'>
+                Have something you want to share? A recipe to warm the heart?
+              </p>
+              <LinkContainer to='/recipes/create'>
+                <Button className='mt-2' variant='info' size='sm' block>
+                  Create Your Recipe
+                </Button>
+              </LinkContainer>
+            </div>
+          )}
           <div className='landing-card text-white text-center p-5'>
             <h1 className='display-4 text-light'>Wholesum Recipes For All</h1>
             <p className='lead pt-4'>
@@ -81,7 +94,9 @@ const LandingPage = () => {
       </Row>
 
       <Row className='mt-4 align-items-center justify-content-center'>
-        {loading ? (
+        {recipeError.length > 0 ? (
+          recipeError.map(error => <Alert variant='danger'>{error}</Alert>)
+        ) : loading ? (
           <Spinner animation='border'>
             <span className='sr-only'>Loading...</span>
           </Spinner>

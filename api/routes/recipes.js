@@ -1,6 +1,4 @@
 import express from 'express';
-import { check } from 'express-validator';
-import auth from '../../middleware/auth.js';
 import {
   getRecipes,
   getRecipeById,
@@ -8,6 +6,7 @@ import {
   updateRecipe,
   deleteRecipeById,
 } from '../controllers/recipes.js';
+import auth from '../../middleware/auth.js';
 
 const router = express.Router();
 
@@ -24,34 +23,12 @@ router.get('/:id', getRecipeById);
 // @route   POST api/recipes
 // @desc    Create a recipe
 // @access  private - temp public
-router.post(
-  '/',
-  [
-    auth,
-    check('recipeTitle', 'Recipe title is required').notEmpty(),
-    check('recipeDescription', 'Recipe description is required').notEmpty(),
-    check('recipeImage', 'Recipe image is required').notEmpty(),
-    check('ingredients', 'Recipe ingredients are required').notEmpty(),
-    check('recipeSteps', 'Recipe needs at least one step').isLength({ min: 1 }),
-  ],
-  createRecipe
-);
+router.post('/', auth, createRecipe);
 
 // @route   PUT api/recipes/:id
 // @desc    Update recipe by id
 // @access  private
-router.put(
-  '/:id',
-  [
-    auth,
-    check('recipeTitle', 'Recipe title is required').notEmpty(),
-    check('recipeDescription', 'Recipe description is required').notEmpty(),
-    check('recipeImage', 'Recipe image is required').notEmpty(),
-    check('ingredients', 'Recipe ingredients are required').notEmpty(),
-    check('recipeSteps', 'Recipe needs at least one step').isLength({ min: 1 }),
-  ],
-  updateRecipe
-);
+router.put('/:id', updateRecipe);
 
 // @route   DELETE api/recipes/:id
 // @desc    Delete recipe by id

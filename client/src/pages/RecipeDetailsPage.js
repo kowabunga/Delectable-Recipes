@@ -45,10 +45,8 @@ const RecipeDetailsPage = ({ match }) => {
               <h2>Ingredients</h2>
               <ListGroup>
                 {ingredients &&
-                  ingredients.map(ingredient => (
-                    <ListGroupItem key={ingredient._id}>
-                      {ingredient.amount} {ingredient.ingredient}
-                    </ListGroupItem>
+                  ingredients.map((ingredient, idx) => (
+                    <ListGroupItem key={idx}>{ingredient}</ListGroupItem>
                   ))}
               </ListGroup>
             </Col>

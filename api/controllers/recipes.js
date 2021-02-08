@@ -1,5 +1,5 @@
 import Recipe from '../../models/Recipe.js';
-import checkValidationResult from '../../utilities/checkValidationResults.js';
+import User from '../../models/User.js';
 
 export const getRecipes = async (req, res) => {
   try {
@@ -30,31 +30,21 @@ export const getRecipeById = async (req, res) => {
 };
 
 export const createRecipe = async (req, res) => {
-  // Run validation check. If errors exist, send 400 status and errors list
-  const [hasError, errors] = checkValidationResult(req, res);
-  if (hasError) res.status(400).json({ errors: errors.array() });
-
   try {
-    // ! See if this is even needed
-    //  get the logged in user - need to add user id to recipe.
-    // const user = await User.findById(req.user.id);
-
-    // if (!user) {
-    //   return res
-    //     .status(400)
-    //     .json({ success: false, error: 'User does not exist' });
-    // }
-
     const {
-      recipeTitle,
-      recipeDescription,
-      recipeImage,
-      ingredients,
-      recipeSteps,
+      recipe: {
+        recipeTitle,
+        recipeDescription,
+        recipeImage,
+        ingredients,
+        recipeSteps,
+      },
+      userName
     } = req.body;
 
     const recipe = new Recipe({
       user: req.user.id,
+      userName,
       recipeTitle,
       recipeDescription,
       recipeImage,
@@ -72,10 +62,6 @@ export const createRecipe = async (req, res) => {
 };
 
 export const updateRecipe = async (req, res) => {
-  // Run validation check. If errors exist, send 400 status and errors list
-  const [hasError, errors] = checkValidationResult(req, res);
-  if (hasError) res.status(400).json({ errors: errors.array() });
-
   try {
     const {
       recipeTitle,

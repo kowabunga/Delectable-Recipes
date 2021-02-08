@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -28,15 +29,18 @@ const LoginPage = ({ history }) => {
 
   return (
     <>
-      {userError && (
+      {userError.length > 0 && (
         <Alert variant='danger'>
           Something went wrong. Please login again.
         </Alert>
       )}
 
-      {loginError && (
-        <Alert variant='danger'>{loginError.error}. Please try again.</Alert>
-      )}
+      {loginError.length > 0 &&
+        loginError.map((error, idx) => (
+          <Alert key={idx} variant='danger'>
+            {error}.
+          </Alert>
+        ))}
 
       <Row className='justify-content-center'>
         <Col lg={3} md={2}></Col>
@@ -47,7 +51,7 @@ const LoginPage = ({ history }) => {
               <FormControl
                 type='email'
                 placeholder='Enter email...'
-                variant={email}
+                value={email}
                 onChange={e => setEmail(e.target.value)}
               />
             </FormGroup>
@@ -57,7 +61,7 @@ const LoginPage = ({ history }) => {
               <FormControl
                 type='password'
                 placeholder='Enter password...'
-                variant={password}
+                value={password}
                 onChange={e => setPassword(e.target.value)}
               />
             </FormGroup>
@@ -70,6 +74,18 @@ const LoginPage = ({ history }) => {
               Login
             </Button>
           </Form>
+        </Col>
+        <Col lg={3} md={2}></Col>
+      </Row>
+      <Row>
+        <Col lg={3} md={2}></Col>
+        <Col lg={6} md={8}>
+          <p className='mt-3'>
+            Don't have an account?{' '}
+            <Link to='/register' className='text-info'>
+              Register
+            </Link>
+          </p>
         </Col>
         <Col lg={3} md={2}></Col>
       </Row>
