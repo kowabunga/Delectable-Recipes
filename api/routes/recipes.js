@@ -6,6 +6,7 @@ import {
   updateRecipe,
   deleteRecipeById,
 } from '../controllers/recipes.js';
+import auth from '../../middleware/auth.js';
 
 const router = express.Router();
 
@@ -22,18 +23,12 @@ router.get('/:id', getRecipeById);
 // @route   POST api/recipes
 // @desc    Create a recipe
 // @access  private - temp public
-router.post(
-  '/',
-  createRecipe
-);
+router.post('/', auth, createRecipe);
 
 // @route   PUT api/recipes/:id
 // @desc    Update recipe by id
 // @access  private
-router.put(
-  '/:id',
-  updateRecipe
-);
+router.put('/:id', updateRecipe);
 
 // @route   DELETE api/recipes/:id
 // @desc    Delete recipe by id

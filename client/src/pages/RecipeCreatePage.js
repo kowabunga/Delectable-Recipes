@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -7,10 +7,17 @@ import FormControl from 'react-bootstrap/FormControl';
 import FormGroup from 'react-bootstrap/FormGroup';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
+import RecipeContext from '../context/recipes/recipeContext';
 import UserContext from '../context/user/userContext';
 
 //@todo Recipe Step Stuff
-const RecipeCreatePage = () => {
+const RecipeCreatePage = ({ history }) => {
+  const recipeContext = useContext(RecipeContext);
+  const { createRecipe } = recipeContext;
+
+  const userContext = useContext(UserContext);
+  const { user } = userContext;
+
   const [hasAlert, setHasAlert] = useState(false);
   const [alertMsg, setAlertMsg] = useState('');
 
@@ -63,11 +70,10 @@ const RecipeCreatePage = () => {
       setstepDirection('');
       setStepMedia('');
       setRecipeSteps([...recipeSteps, step]);
-      console.table(recipeSteps);
     }
   };
 
-  const createRecipe = e => {
+  const createRecipeSubmit = e => {
     const form = e.currentTarget;
     e.preventDefault();
     if (form.checkValidity() === false) {
@@ -84,7 +90,8 @@ const RecipeCreatePage = () => {
       recipeSteps,
     };
 
-    // Create recipe from context
+    // Create recipe from context && redirect to recipes
+    createRecipe(recipe, user.name);
   };
 
   // Add ingredient to ingredient arr & clear current ingredient
@@ -103,7 +110,7 @@ const RecipeCreatePage = () => {
       <Col lg={8} md={10}>
         <h1 className='text-center'>Create Your Recipe</h1>
         {hasAlert && <Alert variant='danger'>{alertMsg}</Alert>}
-        <Form noValidate validated={validated} onSubmit={createRecipe}>
+        <Form noValidate validated={validated} onSubmit={createRecipeSubmit}>
           {formPageNum === 0 ? (
             <>
               <FormGroup controlId='recipeTitle' autoComplete='off'>

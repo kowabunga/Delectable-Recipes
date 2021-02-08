@@ -7,13 +7,14 @@ import FormControl from 'react-bootstrap/FormControl';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+import Alert from 'react-bootstrap/Alert';
 import RecipeGroup from '../components/RecipeGroup';
 import RecipeContext from '../context/recipes/recipeContext';
 import UserContext from '../context/user/userContext';
 
 const LandingPage = () => {
   const recipeContext = useContext(RecipeContext);
-  const { recipes, getAllRecipes, loading } = recipeContext;
+  const { recipes, getAllRecipes, loading, recipeError } = recipeContext;
 
   const userContext = useContext(UserContext);
   const { setUserLoggedIn, loggedIn } = userContext;
@@ -93,7 +94,9 @@ const LandingPage = () => {
       </Row>
 
       <Row className='mt-4 align-items-center justify-content-center'>
-        {loading ? (
+        {recipeError.length > 0 ? (
+          recipeError.map(error => <Alert variant='danger'>{error}</Alert>)
+        ) : loading ? (
           <Spinner animation='border'>
             <span className='sr-only'>Loading...</span>
           </Spinner>

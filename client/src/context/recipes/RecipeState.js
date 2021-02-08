@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useContext } from 'react';
 import RecipeReducer from './recipeReducer';
 import RecipeContext from './recipeContext';
 
@@ -9,6 +9,9 @@ import {
   GET_SINGLE_RECIPE_REQUEST,
   GET_SINGLE_RECIPE_SUCCESS,
   GET_SINGLE_RECIPE_FAIL,
+  CREATE_RECIPE_FAIL,
+  CREATE_RECIPE_REQUEST,
+  CREATE_RECIPE_SUCCESS,
 } from '../../types';
 
 import axios from 'axios';
@@ -18,11 +21,12 @@ const RecipeState = props => {
     recipes: [],
     recipe: {},
     loading: false,
+    recipeError: [],
   };
 
   const [state, dispatch] = useReducer(RecipeReducer, initialState);
 
-  const { recipes, recipe, loading } = state;
+  const { recipes, recipe, loading, recipeError } = state;
 
   // Get all recipes for display
   const getAllRecipes = async () => {
@@ -31,7 +35,10 @@ const RecipeState = props => {
       const { data } = await axios.get('/api/recipes');
       dispatch({ type: GET_ALL_RECIPES_SUCCESS, payload: data });
     } catch (error) {
-      console.error(error);
+      dispatch({
+        type: GET_ALL_RECIPES_FAIL,
+        payload: error.response && error.response.data,
+      });
     }
   };
 
@@ -41,22 +48,51 @@ const RecipeState = props => {
       dispatch({ type: GET_SINGLE_RECIPE_REQUEST });
       const { data } = await axios.get(`/api/recipes/${id}`);
       dispatch({
-        type: GET_SINGLE_RECIPE_REQUEST,
+        type: GET_SINGLE_RECIPE_SUCCESS,
         payload: data,
       });
     } catch (error) {
-      console.error(error);
+      dispatch({
+        type: GET_SINGLE_RECIPE_FAIL,
+        payload: error.response && error.response.data,
+      });
     }
   };
 
-  const createRecipe = async recipe => {
+  const createRecipe = async (recipe, name) => {
     try {
-    } catch (error) {}
+      console.log(name);
+      dispatch({ type: CREATE_RECIPE_REQUEST });
+      const { data } = await axios.post(
+        '/api/recipes',
+        { recipe, userName:name },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'x-auth-token': localStorage.getItem('delec_recipe_jwt'),
+          },
+        }
+      );
+      return true;
+    } catch (error) {
+      dispatch({
+        type: CREATE_RECIPE_FAIL,
+        payload: error.response && error.response.data,
+      });
+    }
   };
 
   return (
     <RecipeContext.Provider
-      value={{ recipes, recipe, loading, getAllRecipes, getSingleRecipe }}
+      value={{
+        recipes,
+        recipe,
+        loading,
+        recipeError,
+        getAllRecipes,
+        getSingleRecipe,
+        createRecipe,
+      }}
     >
       {props.children}
     </RecipeContext.Provider>

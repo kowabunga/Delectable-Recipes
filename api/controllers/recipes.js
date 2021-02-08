@@ -1,4 +1,5 @@
 import Recipe from '../../models/Recipe.js';
+import User from '../../models/User.js';
 
 export const getRecipes = async (req, res) => {
   try {
@@ -31,15 +32,19 @@ export const getRecipeById = async (req, res) => {
 export const createRecipe = async (req, res) => {
   try {
     const {
-      recipeTitle,
-      recipeDescription,
-      recipeImage,
-      ingredients,
-      recipeSteps,
+      recipe: {
+        recipeTitle,
+        recipeDescription,
+        recipeImage,
+        ingredients,
+        recipeSteps,
+      },
+      userName
     } = req.body;
 
     const recipe = new Recipe({
       user: req.user.id,
+      userName,
       recipeTitle,
       recipeDescription,
       recipeImage,
