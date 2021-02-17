@@ -33,6 +33,6 @@ router.put('/:id', updateRecipe);
 // @route   DELETE api/recipes/:id
 // @desc    Delete recipe by id
 // @access  public
-router.delete('/:id', deleteRecipeById);
+router.delete('/:id', auth, deleteRecipeById);
 
 export default router;

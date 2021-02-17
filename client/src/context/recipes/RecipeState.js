@@ -1,4 +1,4 @@
-import React, { useReducer, useContext } from 'react';
+import React, { useReducer } from 'react';
 import RecipeReducer from './recipeReducer';
 import RecipeContext from './recipeContext';
 
@@ -12,6 +12,12 @@ import {
   CREATE_RECIPE_FAIL,
   CREATE_RECIPE_REQUEST,
   CREATE_RECIPE_SUCCESS,
+  DELETE_RECIPE_FAIL,
+  DELETE_RECIPE_REQUEST,
+  DELETE_RECIPE_SUCCESS,
+  GET_USER_RECIPES_REQUEST,
+  GET_USER_RECIPES_SUCCESS,
+  GET_USER_RECIPES_FAIL,
 } from '../../types';
 
 import axios from 'axios';
@@ -19,14 +25,23 @@ import axios from 'axios';
 const RecipeState = props => {
   const initialState = {
     recipes: [],
+    userRecipes: [],
     recipe: {},
     loading: false,
     recipeError: [],
+    recipeCreated: false,
   };
 
   const [state, dispatch] = useReducer(RecipeReducer, initialState);
 
-  const { recipes, recipe, loading, recipeError } = state;
+  const {
+    recipes,
+    userRecipes,
+    recipe,
+    loading,
+    recipeError,
+    recipeCreated,
+  } = state;
 
   // Get all recipes for display
   const getAllRecipes = async () => {
@@ -37,6 +52,26 @@ const RecipeState = props => {
     } catch (error) {
       dispatch({
         type: GET_ALL_RECIPES_FAIL,
+        payload: error.response && error.response.data,
+      });
+    }
+  };
+
+  // Get all recipes belonging to the logged in  user
+  const getUserRecipes = async jwt => {
+    try {
+      dispatch({ type: GET_USER_RECIPES_REQUEST });
+      const { data } = await axios.get('/api/users/recipes', {
+        headers: {
+          'x-auth-token': jwt,
+        },
+      });
+      console.dir(data);
+      dispatch({ type: GET_USER_RECIPES_SUCCESS, payload: data });
+    } catch (error) {
+      console.log(error);
+      dispatch({
+        type: GET_USER_RECIPES_FAIL,
         payload: error.response && error.response.data,
       });
     }
@@ -73,10 +108,29 @@ const RecipeState = props => {
           },
         }
       );
+      dispatch({ type: CREATE_RECIPE_SUCCESS });
       return true;
     } catch (error) {
       dispatch({
         type: CREATE_RECIPE_FAIL,
+        payload: error.response && error.response.data,
+      });
+    }
+  };
+
+  const deleteRecipe = async (id, jwt) => {
+    try {
+      dispatch({ type: DELETE_RECIPE_REQUEST });
+      await axios.delete(`/api/recipes/${id}`, {
+        headers: {
+          'x-auth-token': jwt,
+        },
+      });
+
+      dispatch({ type: DELETE_RECIPE_SUCCESS, payload: id });
+    } catch (error) {
+      dispatch({
+        type: DELETE_RECIPE_FAIL,
         payload: error.response && error.response.data,
       });
     }
@@ -89,9 +143,13 @@ const RecipeState = props => {
         recipe,
         loading,
         recipeError,
+        recipeCreated,
+        userRecipes,
         getAllRecipes,
         getSingleRecipe,
         createRecipe,
+        getUserRecipes,
+        deleteRecipe,
       }}
     >
       {props.children}

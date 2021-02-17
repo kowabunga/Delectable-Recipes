@@ -12,6 +12,7 @@ import {
   USER_REGISTER_FAIL,
 } from '../../types';
 
+// eslint-disable-next-line
 export default (state, action) => {
   const { type, payload } = action;
 

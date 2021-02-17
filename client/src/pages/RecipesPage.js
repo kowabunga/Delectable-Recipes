@@ -22,6 +22,7 @@ const RecipesPage = () => {
 
   useEffect(() => {
     getAllRecipes();
+    // eslint-disable-next-line
   }, []);
 
   const searchRecipes = () => {};

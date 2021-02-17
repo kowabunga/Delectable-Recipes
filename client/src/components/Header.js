@@ -38,12 +38,12 @@ const Header = ({ history }) => {
               </LinkContainer>
             ) : (
               <>
-                <NavDropdown title='Your Account' id='account-nav-dropdown'>
+                <NavDropdown title='My Account' id='account-nav-dropdown'>
                   <LinkContainer exact to='/account'>
                     <NavDropdown.Item>Account Details</NavDropdown.Item>
                   </LinkContainer>
                   <LinkContainer to='/account/recipes'>
-                    <NavDropdown.Item>Your Recipes</NavDropdown.Item>
+                    <NavDropdown.Item>My Recipes</NavDropdown.Item>
                   </LinkContainer>
                   <LinkContainer to='/account/edit'>
                     <NavDropdown.Item>Edit Information</NavDropdown.Item>

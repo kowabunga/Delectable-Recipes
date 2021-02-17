@@ -42,7 +42,7 @@ const RegisterPage = ({ history }) => {
 
   useEffect(() => {
     loggedIn && registerError.length <= 0 && history.push('/account');
-  }, [loggedIn, registerError]);
+  }, [loggedIn, registerError,history]);
 
   return (
     <>

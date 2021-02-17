@@ -19,11 +19,13 @@ const LandingPage = () => {
   const userContext = useContext(UserContext);
   const { setUserLoggedIn, loggedIn } = userContext;
 
+  // eslint-disable-next-line
   const [recipeQuery, setRecipeQuery] = useState('');
 
   useEffect(() => {
     getAllRecipes();
     setUserLoggedIn();
+    // eslint-disable-next-line
   }, []);
 
   const searchRecipes = e => {

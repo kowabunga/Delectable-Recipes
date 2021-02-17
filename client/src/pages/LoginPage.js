@@ -25,7 +25,7 @@ const LoginPage = ({ history }) => {
 
   useEffect(() => {
     loggedIn && history.push('/account');
-  }, [loggedIn]);
+  }, [loggedIn,history]);
 
   return (
     <>

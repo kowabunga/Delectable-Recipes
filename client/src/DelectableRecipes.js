@@ -23,6 +23,7 @@ const MainApp = () => {
   useEffect(() => {
     // Check if user previously logged in has jwt in local storage on page load
     setUserLoggedIn();
+    // eslint-disable-next-line
   }, []);
 
   return (

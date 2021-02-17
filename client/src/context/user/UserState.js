@@ -14,9 +14,6 @@ import {
   GET_USER_DATA_REQUEST,
   GET_USER_DATA_SUCCESS,
   SET_USER_LOGGED_IN_ON_RELOAD,
-  GET_USER_RECIPES_REQUEST,
-  GET_USER_RECIPES_SUCCESS,
-  GET_USER_RECIPES_FAIL,
 } from '../../types';
 
 import axios from 'axios';
@@ -111,20 +108,6 @@ const UserState = props => {
       });
   };
 
-  const getUserRecipes = async () => {
-    try {
-      dispatch({ type: GET_USER_RECIPES_REQUEST });
-      const { data } = await axios.get('api/users/recipes');
-
-      dispatch({ type: GET_USER_RECIPES_SUCCESS, payload: data });
-    } catch (error) {
-      dispatch({
-        type: GET_USER_RECIPES_FAIL,
-        payload: error.response && error.response.data,
-      });
-    }
-  };
-
   const registerUser = async (name, email, password, confirmPassword) => {
     try {
       //@TODO add front end validation for password and confirm password
@@ -163,7 +146,6 @@ const UserState = props => {
         registerUser,
         setUserLoggedIn,
         getUserInformation,
-        getUserRecipes,
       }}
     >
       {props.children}
