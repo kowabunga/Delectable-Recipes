@@ -19,6 +19,8 @@ const RecipeCard = ({ recipe, isEditOrDelete, history }) => {
 
   const { userName, recipeTitle, recipeDescription, recipeImage, _id } = recipe;
 
+  //@TODO Do Edit Recipe.
+  //? Maybe make recipe form its own component to be able to be reused
   const editRecipe = () => {};
 
   const deleteR = e => {
