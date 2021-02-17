@@ -24,6 +24,7 @@ const RecipeDetailsPage = ({ match }) => {
 
   useEffect(() => {
     getSingleRecipe(match.params.id);
+    // eslint-disable-next-line
   }, [match]);
   return (
     <>

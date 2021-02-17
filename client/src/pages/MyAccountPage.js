@@ -11,7 +11,7 @@ const MyAccountPage = () => {
   const userContext = useContext(UserContext);
   const {
     getUserInformation,
-    user: { name, email },
+    user: { name },
     loading,
     jwt,
     userError,
@@ -20,11 +20,13 @@ const MyAccountPage = () => {
 
   useEffect(() => {
     jwt !== null && getUserInformation();
+    // eslint-disable-next-line
   }, [jwt]);
 
   // If usererror - i.e. can't get user info such as if user has been deleted, logout and return to login
   useEffect(() => {
     userError.length > 0 && logoutUser();
+    // eslint-disable-next-line
   }, [userError]);
 
   return (
