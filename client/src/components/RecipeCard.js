@@ -19,9 +19,10 @@ const RecipeCard = ({ recipe, isEditOrDelete, history }) => {
 
   const { userName, recipeTitle, recipeDescription, recipeImage, _id } = recipe;
 
-  //@TODO Do Edit Recipe.
-  //? Maybe make recipe form its own component to be able to be reused
-  const editRecipe = () => {};
+  const editRecipe = e => {
+    e.preventDefault();
+    history.push(`/recipes/${_id}/edit`);
+  };
 
   const deleteR = e => {
     e.preventDefault();
@@ -36,16 +37,16 @@ const RecipeCard = ({ recipe, isEditOrDelete, history }) => {
             placement={'top'}
             overlay={<Tooltip>Edit Recipe</Tooltip>}
           >
-            <Button variant='warning' size='sm'>
-              <i class='far fa-edit bigger'></i>
+            <Button variant='warning' size='sm' onClick={e => editRecipe(e)}>
+              <i className='far fa-edit bigger'></i>
             </Button>
           </OverlayTrigger>
           <OverlayTrigger
             placement={'top'}
             overlay={<Tooltip>Delete Recipe</Tooltip>}
           >
-            <Button variant='danger' size='sm' onClick={deleteR}>
-              <i class='far fa-trash-alt bigger'></i>
+            <Button variant='danger' size='sm' onClick={e => deleteR(e)}>
+              <i className='far fa-trash-alt bigger'></i>
             </Button>
           </OverlayTrigger>
         </ButtonGroup>

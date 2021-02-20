@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import RecipeCard from './RecipeCard';
 
-const RecipeGroup = ({ recipes, isEditOrDelete }) => {
+const RecipeGroup = ({ recipes, isEditOrDelete, history}) => {
   return (
     <>
       {recipes.map(recipe => (
@@ -10,6 +10,7 @@ const RecipeGroup = ({ recipes, isEditOrDelete }) => {
           key={recipe._id}
           recipe={recipe}
           isEditOrDelete={isEditOrDelete}
+          history={history}
         />
       ))}
     </>

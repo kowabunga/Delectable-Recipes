@@ -6,7 +6,7 @@ import RecipeContext from '../context/recipes/recipeContext';
 import UserContext from '../context/user/userContext';
 import { Link } from 'react-router-dom';
 
-const MyRecipesPage = () => {
+const MyRecipesPage = ({history}) => {
   const recipeContext = useContext(RecipeContext);
   const { userRecipes, getUserRecipes, loading } = recipeContext;
 
@@ -34,7 +34,7 @@ const MyRecipesPage = () => {
           <span className='sr-only'>Loading...</span>
         </Spinner>
       ) : (
-        <RecipeGroup recipes={userRecipes} isEditOrDelete={true} />
+        <RecipeGroup recipes={userRecipes} isEditOrDelete={true} history={history}/>
       )}
     </Row>
   );

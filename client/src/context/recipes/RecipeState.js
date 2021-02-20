@@ -118,6 +118,11 @@ const RecipeState = props => {
     }
   };
 
+  const editRecipe = async (id, jwt) => {
+    console.log(id, jwt);
+    console.log('Editing recipe...');
+  };
+
   const deleteRecipe = async (id, jwt) => {
     try {
       dispatch({ type: DELETE_RECIPE_REQUEST });
@@ -147,8 +152,9 @@ const RecipeState = props => {
         userRecipes,
         getAllRecipes,
         getSingleRecipe,
-        createRecipe,
         getUserRecipes,
+        createRecipe,
+        editRecipe,
         deleteRecipe,
       }}
     >
