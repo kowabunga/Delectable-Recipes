@@ -96,7 +96,6 @@ const RecipeState = props => {
 
   const createRecipe = async (recipe, name, jwt) => {
     try {
-      console.log(name);
       dispatch({ type: CREATE_RECIPE_REQUEST });
       await axios.post(
         '/api/recipes',

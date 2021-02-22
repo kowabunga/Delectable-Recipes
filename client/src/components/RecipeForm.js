@@ -13,7 +13,7 @@ import RecipeContext from '../context/recipes/recipeContext';
 //@TODO Make this form work for edit and create submits
 const RecipeForm = ({ setAlertMsg, setHasAlert, history, match }) => {
   const recipeContext = useContext(RecipeContext);
-  const { getSingleRecipe, editRecipe, createRecipe } = recipeContext;
+  const { getSingleRecipe, editRecipe, createRecipe, recipe } = recipeContext;
 
   const userContext = useContext(UserContext);
   const { user, jwt } = userContext;
@@ -21,12 +21,12 @@ const RecipeForm = ({ setAlertMsg, setHasAlert, history, match }) => {
   const [ingAdd, setIngAdd] = useState(false);
 
   const [formPageNum, setFormPageNum] = useState(0);
+  const [recipeStepNum, setRecipeStepNum] = useState(0);
   const [validated, setValidated] = useState(false);
   const [recipeTitle, setRecipeTitle] = useState('');
   const [recipeDescription, setRecipeDescription] = useState('');
   const [recipeImage, setRecipeImage] = useState('');
-  const [ingredient, setIngredient] = useState('');
-  const [ingredients, setIngredients] = useState([]);
+  const [ingredients, setIngredients] = useState('');
   const [stepTitle, setStepTitle] = useState('');
   const [stepDirection, setstepDirection] = useState('');
   const [stepMedia, setStepMedia] = useState('');
@@ -36,9 +36,23 @@ const RecipeForm = ({ setAlertMsg, setHasAlert, history, match }) => {
   const [recipeSteps, setRecipeSteps] = useState([]);
 
   useEffect(() => {
-    const recipe = getSingleRecipe(match.params.id);
-    console.log(recipe);
-  }, []);
+    // If loading recipe edit page first time, get recipe to edit from recipe id in url params
+    if (history.location.pathname !== '/recipes/create') {
+      getSingleRecipe(match.params.id);
+    }
+
+    // If edit page but not loading (the recipe has been loaded), set all required input field values in state
+    if (
+      history.location.pathname !== '/recipes/create' &&
+      Object.keys(recipe).length > 0
+    ) {
+      setRecipeTitle(recipe.recipeTitle);
+      setRecipeDescription(recipe.recipeDescription);
+      setRecipeImage(recipe.recipeImage);
+      setIngredients(recipe.ingredients.join(', '));
+      setRecipeSteps(recipe.recipeSteps);
+    }
+  }, [recipe]);
 
   const nextPage = () => {
     if (formPageNum === 0) {
@@ -64,22 +78,27 @@ const RecipeForm = ({ setAlertMsg, setHasAlert, history, match }) => {
         setAlertMsg('Every recipe needs ingredients. Please enter some!');
       }
     } else {
-      const step = {
-        title: stepTitle,
-        directions: stepDirection,
-        media: stepMedia,
-        mediaType: stepMediaType,
-      };
-      setStepTitle('');
-      setstepDirection('');
-      setStepMedia('');
-      setRecipeSteps([...recipeSteps, step]);
-      setImageType(false);
-      setVideoType(false);
+      if (history.location.pathname === '/recipes/create') {
+        const step = {
+          title: stepTitle,
+          directions: stepDirection,
+          media: stepMedia,
+          mediaType: stepMediaType,
+        };
+        setStepTitle('');
+        setstepDirection('');
+        setStepMedia('');
+        setRecipeSteps([...recipeSteps, step]);
+        setImageType(false);
+        setVideoType(false);
+      } else {
+        if (recipeStepNum < recipeSteps.length - 1)
+          setRecipeStepNum(recipeStepNum + 1);
+      }
     }
   };
 
-  const editRecipeSubmit = e => {
+  const RecipeFormSubmit = e => {
     const form = e.currentTarget;
     e.preventDefault();
     if (form.checkValidity() === false) {
@@ -92,27 +111,21 @@ const RecipeForm = ({ setAlertMsg, setHasAlert, history, match }) => {
       recipeTitle,
       recipeDescription,
       recipeImage,
-      ingredients,
+      ingredients: [...ingredients.split(',')],
       recipeSteps,
     };
 
-    // Create recipe from context && redirect to recipes
-    editRecipe(recipe, user.name, jwt) && history.push('/account/recipes');
-  };
-
-  // Add ingredient to ingredient arr & clear current ingredient
-  const addIngredient = () => {
-    setIngAdd(true);
-    setIngredients([...ingredients, ingredient]);
-    setIngredient('');
-    console.log(ingredients);
-    setTimeout(() => {
-      setIngAdd(false);
-    }, 2500);
+    // Either create recipe OR edit recipe based on path
+    if (history.location.pathname === '/recipes/create') {
+      // Create recipe from context && redirect to recipes
+      createRecipe(recipe, user.name, jwt) && history.push('/account/recipes');
+    } else {
+      console.log('Edit Form Submission');
+    }
   };
 
   return (
-    <Form noValidate validated={validated} onSubmit={editRecipeSubmit}>
+    <Form noValidate validated={validated} onSubmit={RecipeFormSubmit}>
       {formPageNum === 0 ? (
         <>
           <FormGroup controlId='recipeTitle' autoComplete='off'>
@@ -152,96 +165,159 @@ const RecipeForm = ({ setAlertMsg, setHasAlert, history, match }) => {
         <>
           <p className='lead'>
             Add your ingredients one at a time with the measurement first, such
-            as <em>1/4 cup Flour</em>. Click <em>Add Ingredient</em> to add it
-            to the list. Click <em>Continue</em> when you are done.
+            as <em>1/4 cup Flour</em>. Separate ingredients by a comma such as
+            this: <em> 1/4 cup Flour, 1/2 cup Butter</em>
           </p>
-
-          {ingAdd && <Alert variant='success'>Ingredient Added</Alert>}
           <FormGroup controlId='recipeIngredient' autoComplete='off'>
             <FormLabel>Ingredient</FormLabel>
             <FormControl
               required
               type='text'
               placeholder='Enter ingredient and measurement...'
-              value={ingredient}
-              onChange={e => setIngredient(e.target.value)}
+              value={ingredients}
+              onChange={e => setIngredients(e.target.value)}
             />
           </FormGroup>
-          <Button
-            type='button'
-            variant='outline-primary'
-            className='mb-2'
-            onClick={addIngredient}
-          >
-            Add Ingredient
-          </Button>
         </>
       ) : (
+        // Recipe Steps has two components. The Create and the Edit. The edit must loop through the preexisting steps one at a time.
         <>
-          <FormGroup>
-            <FormLabel>Step Title</FormLabel>
-            <FormControl
-              type='text'
-              placeholder='Enter step title'
-              value={stepTitle}
-              onChange={e => setStepTitle(e.target.value)}
-            ></FormControl>
-          </FormGroup>
+          {history.location.pathname === '/recipes/create' ? (
+            <>
+              <FormGroup>
+                <FormLabel>Step Title</FormLabel>
+                <FormControl
+                  type='text'
+                  placeholder='Enter step title'
+                  value={stepTitle}
+                  onChange={e => setStepTitle(e.target.value)}
+                ></FormControl>
+              </FormGroup>
 
-          <FormGroup>
-            <FormLabel>Step Directions</FormLabel>
-            <FormControl
-              type='text'
-              placeholder='Enter step directions...'
-              value={stepDirection}
-              onChange={e => setstepDirection(e.target.value)}
-            ></FormControl>
-          </FormGroup>
+              <FormGroup>
+                <FormLabel>Step Directions</FormLabel>
+                <FormControl
+                  type='text'
+                  placeholder='Enter step directions...'
+                  value={stepDirection}
+                  onChange={e => setstepDirection(e.target.value)}
+                ></FormControl>
+              </FormGroup>
 
-          <FormGroup>
-            <FormLabel>Step Media (optional)</FormLabel>
-            <FormControl
-              type='text'
-              placeholder='Enter optional step media...'
-              value={stepMedia}
-              onChange={e => setStepMedia(e.target.value)}
-            ></FormControl>
-          </FormGroup>
-          <p className='pt-3'>Select media type: Image or Video</p>
-          <FormGroup>
-            <ButtonGroup>
-              <ToggleButton
-                type='radio'
-                variant='secondary'
-                checked={imageType}
-                value='1'
-                onChange={e => {
-                  setImageType(true);
-                  videoType && setVideoType(false);
-                  setStepMediaType('image');
-                }}
-                name=''
-              >
-                {' '}
-                Image
-              </ToggleButton>
-              <ToggleButton
-                type='radio'
-                variant='secondary'
-                checked={videoType}
-                value='1'
-                onChange={e => {
-                  setVideoType(true);
-                  imageType && setImageType(false);
-                  setStepMediaType('video');
-                }}
-                name=''
-              >
-                {' '}
-                Video
-              </ToggleButton>
-            </ButtonGroup>
-          </FormGroup>
+              <FormGroup>
+                <FormLabel>Step Media (optional)</FormLabel>
+                <FormControl
+                  type='text'
+                  placeholder='Enter optional step media...'
+                  value={stepMedia}
+                  onChange={e => setStepMedia(e.target.value)}
+                ></FormControl>
+              </FormGroup>
+              <p className='pt-3'>Select media type: Image or Video</p>
+              <FormGroup>
+                <ButtonGroup>
+                  <ToggleButton
+                    type='radio'
+                    variant='secondary'
+                    checked={imageType}
+                    value='1'
+                    onChange={e => {
+                      setImageType(true);
+                      videoType && setVideoType(false);
+                      setStepMediaType('image');
+                    }}
+                    name=''
+                  >
+                    {' '}
+                    Image
+                  </ToggleButton>
+                  <ToggleButton
+                    type='radio'
+                    variant='secondary'
+                    checked={videoType}
+                    value='1'
+                    onChange={e => {
+                      setVideoType(true);
+                      imageType && setImageType(false);
+                      setStepMediaType('video');
+                    }}
+                    name=''
+                  >
+                    {' '}
+                    Video
+                  </ToggleButton>
+                </ButtonGroup>
+              </FormGroup>
+            </>
+          ) : (
+            //@TODO make edit put individual recipeSteps in state for input binding
+            <>
+              <FormGroup>
+                <FormLabel>Step Title</FormLabel>
+                <FormControl
+                  type='text'
+                  placeholder='Enter step title'
+                  value={recipeSteps[recipeStepNum].title}
+                  onChange={e => setStepTitle(e.target.value)}
+                ></FormControl>
+              </FormGroup>
+
+              <FormGroup>
+                <FormLabel>Step Directions</FormLabel>
+                <FormControl
+                  type='text'
+                  placeholder='Enter step directions...'
+                  value={recipeSteps[recipeStepNum].directions}
+                  onChange={e => setstepDirection(e.target.value)}
+                ></FormControl>
+              </FormGroup>
+
+              <FormGroup>
+                <FormLabel>Step Media (optional)</FormLabel>
+                <FormControl
+                  type='text'
+                  placeholder='Enter optional step media...'
+                  value={recipeSteps[recipeStepNum].media}
+                  onChange={e => setStepMedia(e.target.value)}
+                ></FormControl>
+              </FormGroup>
+              <p className='pt-3'>Select media type: Image or Video</p>
+              <FormGroup>
+                <ButtonGroup>
+                  <ToggleButton
+                    type='radio'
+                    variant='secondary'
+                    checked={imageType}
+                    value='1'
+                    onChange={e => {
+                      setImageType(true);
+                      videoType && setVideoType(false);
+                      setStepMediaType('image');
+                    }}
+                    name=''
+                  >
+                    {' '}
+                    Image
+                  </ToggleButton>
+                  <ToggleButton
+                    type='radio'
+                    variant='secondary'
+                    checked={videoType}
+                    value='1'
+                    onChange={e => {
+                      setVideoType(true);
+                      imageType && setImageType(false);
+                      setStepMediaType('video');
+                    }}
+                    name=''
+                  >
+                    {' '}
+                    Video
+                  </ToggleButton>
+                </ButtonGroup>
+              </FormGroup>
+            </>
+          )}
         </>
       )}
 
@@ -253,13 +329,19 @@ const RecipeForm = ({ setAlertMsg, setHasAlert, history, match }) => {
         onClick={() => nextPage()}
       >
         {formPageNum === 0
-          ? 'Start Recipe'
+          ? history.location.pathname === '/recipes/create'
+            ? 'Start Recipe'
+            : 'Begin Edit'
           : formPageNum === 1
           ? 'Continue'
-          : 'Add Step'}
+          : history.location.pathname === '/recipes/create'
+          ? 'Add Step'
+          : 'Edit Step'}
       </Button>
       <Button type='submit' block disabled={recipeSteps.length < 1}>
-        Create Recipe
+        {history.location.pathname === '/recipes/create'
+          ? 'Create Recipe'
+          : 'Edit Recipe'}
       </Button>
     </Form>
   );
