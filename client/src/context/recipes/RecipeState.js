@@ -96,7 +96,6 @@ const RecipeState = props => {
 
   const createRecipe = async (recipe, name, jwt) => {
     try {
-      console.log(name);
       dispatch({ type: CREATE_RECIPE_REQUEST });
       await axios.post(
         '/api/recipes',
@@ -116,6 +115,11 @@ const RecipeState = props => {
         payload: error.response && error.response.data,
       });
     }
+  };
+
+  const editRecipe = async (id, jwt) => {
+    console.log(id, jwt);
+    console.log('Editing recipe...');
   };
 
   const deleteRecipe = async (id, jwt) => {
@@ -147,8 +151,9 @@ const RecipeState = props => {
         userRecipes,
         getAllRecipes,
         getSingleRecipe,
-        createRecipe,
         getUserRecipes,
+        createRecipe,
+        editRecipe,
         deleteRecipe,
       }}
     >

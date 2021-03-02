@@ -11,7 +11,7 @@ import Login from './pages/LoginPage';
 import Register from './pages/RegisterPage';
 import MyAccount from './pages/MyAccountPage';
 import RecipeCreatePage from './pages/RecipeCreatePage';
-import RecipeUpdatePage from './pages/RecipeUpdatePage';
+import RecipeEditPage from './pages/RecipeEditPage';
 import MyAccountEditPage from './pages/MyAccountEditPage';
 import MyRecipesPage from './pages/MyRecipesPage';
 import PageNotFound from './pages/PageNotFound';
@@ -37,11 +37,8 @@ const MainApp = () => {
             <Route path='/register' component={Register} />
             <Route exact path='/recipes' component={RecipesPage} />
             <PrivateRoute path='/recipes/create' component={RecipeCreatePage} />
+            <PrivateRoute path='/recipes/:id/edit' component={RecipeEditPage} />
             <Route path='/recipes/:id' component={RecipeDetailsPage} />
-            <PrivateRoute
-              path='recipes/:id/update'
-              component={RecipeUpdatePage}
-            />
             <PrivateRoute exact path='/account' component={MyAccount} />
             <PrivateRoute path='/account/edit' component={MyAccountEditPage} />
             <PrivateRoute path='/account/recipes' component={MyRecipesPage} />
